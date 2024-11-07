@@ -6,9 +6,8 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../redux/slices/auth";
+import { setToken, setUser } from "../redux/slices/auth"; // Import setUser action
 import { login } from "../service/auth";
-import { toast } from "react-toastify";
 
 export const Route = createLazyFileRoute("/login")({
   component: Login,
@@ -18,40 +17,41 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    // get token from local storage
-    if (token) {
-      navigate({ to: "/" });
+    // Redirect based on role_id if token and user exist
+    if (token && user) {
+      if (user.role_id === 1) {
+        navigate({ to: "/dashbord" });
+      } else if (user.role_id === 2) {
+        navigate({ to: "/" });
+      }
     }
-  }, [navigate, token]);
+  }, [navigate, token, user]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    /* hit the login API */
-    // define the request body
     const body = {
       email,
       password,
     };
 
-    // hit the login API with the data
     const result = await login(body);
+
     if (result.success) {
-      // set token to global state
+      const user = result.data.user; // Get user data, including role_id
+
+      // Save the token and user in Redux state
       dispatch(setToken(result.data.token));
-
-      // redirect to home
-      navigate({ to: "/" });
-      return;
+      dispatch(setUser(user)); // Store user with role_id
+    } else {
+      alert(result.message); // Show error if login fails
     }
-
-    toast.error(result?.message);
   };
 
   return (
@@ -71,9 +71,7 @@ function Login() {
                     placeholder="Email"
                     required
                     value={email}
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                    }}
+                    onChange={(event) => setEmail(event.target.value)}
                   />
                 </Col>
               </Form.Group>
@@ -87,9 +85,7 @@ function Login() {
                     placeholder="Password"
                     required
                     value={password}
-                    onChange={(event) => {
-                      setPassword(event.target.value);
-                    }}
+                    onChange={(event) => setPassword(event.target.value)}
                   />
                 </Col>
               </Form.Group>
