@@ -34,9 +34,9 @@ function CreateModel() {
   const [Manufacture, setManufacture] = useState([]);
   const [manufactureId, setManufactureId] = useState(0);
   const [Spec, setSpec] = useState([]);
-  const [specId, setSpecId] = useState(0);
+  const [selectedSpecs, setSelectedSpecs] = useState([]);
   const [Option, setOption] = useState([]);
-  const [optionId, setOptionId] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
     const getTransmissionData = async () => {
@@ -77,6 +77,25 @@ function CreateModel() {
     getOptionData();
   }, []);
 
+  const handleSpecChange = (event) => {
+    const specId = parseInt(event.target.value, 10);
+    setSelectedSpecs(
+      (prevSpecs) =>
+        prevSpecs.includes(specId)
+          ? prevSpecs.filter((id) => id !== specId) // Hapus jika sudah ada
+          : [...prevSpecs, specId] // Tambahkan jika belum ada
+    );
+  };
+
+  const handleOptionChange = (event) => {
+    const optionId = parseInt(event.target.value, 10);
+    setSelectedOptions((prevOptions) =>
+      prevOptions.includes(optionId)
+        ? prevOptions.filter((id) => id !== optionId)
+        : [...prevOptions, optionId]
+    );
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
 
@@ -86,8 +105,8 @@ function CreateModel() {
       capacity,
       typeId,
       manufactureId,
-      specId,
-      optionId,
+      specs: selectedSpecs, // Kirim array specs yang dipilih
+      options: selectedOptions,
     };
     const result = await createModel(request);
     if (result?.success) {
@@ -128,6 +147,7 @@ function CreateModel() {
                 <Col sm="9">
                   <Form.Select
                     aria-label="Default select example"
+                    value={transmissionId}
                     onChange={(event) => setTransmissionId(event.target.value)}
                   >
                     <option disabled selected>
@@ -165,6 +185,7 @@ function CreateModel() {
                 <Col sm="9">
                   <Form.Select
                     aria-label="Default select example"
+                    value={typeId}
                     onChange={(event) => setTypeId(event.target.value)}
                   >
                     <option disabled selected>
@@ -186,6 +207,7 @@ function CreateModel() {
                 <Col sm="9">
                   <Form.Select
                     aria-label="Default select example"
+                    value={manufactureId}
                     onChange={(event) => setManufactureId(event.target.value)}
                   >
                     <option disabled selected>
@@ -202,46 +224,40 @@ function CreateModel() {
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="spec_id">
                 <Form.Label column sm={3}>
-                  spec
+                  Spec
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Select
-                    aria-label="Default select example"
-                    onChange={(event) => setSpecId(event.target.value)}
-                  >
-                    <option disabled selected>
-                      Select spec
-                    </option>
-                    {Spec.length > 0 &&
-                      Spec.map((spec) => (
-                        <option key={spec?.id} value={spec?.id}>
-                          {spec?.spec_name}
-                        </option>
-                      ))}
-                  </Form.Select>
+                  {Spec.map((spec) => (
+                    <Form.Check
+                      type="checkbox"
+                      key={spec?.id}
+                      label={spec?.spec_name}
+                      value={spec?.id}
+                      checked={selectedSpecs.includes(spec?.id)}
+                      onChange={handleSpecChange}
+                    />
+                  ))}
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row} className="mb-3" controlId="option_id">
                 <Form.Label column sm={3}>
-                  option
+                  Option
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Select
-                    aria-label="Default select example"
-                    onChange={(event) => setSpecId(event.target.value)}
-                  >
-                    <option disabled selected>
-                      Select option
-                    </option>
-                    {Option.length > 0 &&
-                      Option.map((option) => (
-                        <option key={option?.id} value={option?.id}>
-                          {option?.option_name}
-                        </option>
-                      ))}
-                  </Form.Select>
+                  {Option.map((option) => (
+                    <Form.Check
+                      type="checkbox"
+                      key={option?.id}
+                      label={option?.option_name}
+                      value={option?.id}
+                      checked={selectedOptions.includes(option?.id)}
+                      onChange={handleOptionChange}
+                    />
+                  ))}
                 </Col>
               </Form.Group>
+
               <div className="d-grid gap-2">
                 <Button type="submit" variant="primary">
                   Create Model

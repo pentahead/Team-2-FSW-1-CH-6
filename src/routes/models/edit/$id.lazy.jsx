@@ -9,8 +9,8 @@ import Image from "react-bootstrap/Image";
 import { getTransmission } from "../../../service/transmission";
 import { getType } from "../../../service/type";
 import { getManufacture } from "../../../service/manufacture";
-import { updateModel } from "../../../service/models";
-import Protected from "../../components/Auth/Protected";
+import { getDetailModel, updateModel } from "../../../service/models";
+import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/models/edit/$id")({
   component: () => (
@@ -65,7 +65,7 @@ function EditModel() {
       setIsLoading(true);
       const result = await getDetailModel(id);
       if (result?.success) {
-        setModelName(result.data?.model_name);
+        setModelName(result.data?.modelName);
         setTransmissionId(result.data?.transmission_id);
         setCapacity(result.data?.capacity);
         setTypeId(result.data?.type_id);
@@ -91,7 +91,7 @@ function EditModel() {
     event.preventDefault();
 
     const request = {
-      model_name,
+      modelName,
       transmissionId,
       capacity,
       typeId,
@@ -122,7 +122,7 @@ function EditModel() {
                     type="text"
                     placeholder="Name"
                     required
-                    value={model_name}
+                    value={modelName}
                     onChange={(event) => {
                       setModelName(event.target.value);
                     }}
@@ -147,7 +147,7 @@ function EditModel() {
                           value={transmission.id}
                           selected={transmission.id == transmissionId}
                         >
-                          {transmission.name}
+                          {transmission?.transmission_name}
                         </option>
                       ))}
                   </Form.Select>
@@ -187,7 +187,7 @@ function EditModel() {
                           value={type.id}
                           selected={type.id == typeId}
                         >
-                          {type.name}
+                          {type?.type_name}
                         </option>
                       ))}
                   </Form.Select>
@@ -211,7 +211,7 @@ function EditModel() {
                           value={manufacture.id}
                           selected={manufacture.id == manufactureId}
                         >
-                          {manufacture.name}
+                          {manufacture?.manufacture_name}
                         </option>
                       ))}
                   </Form.Select>
@@ -219,7 +219,7 @@ function EditModel() {
               </Form.Group>
               <div className="d-grid gap-2">
                 <Button type="submit" variant="primary">
-                  Edit Student
+                  Edit Model
                 </Button>
               </div>
             </Form>

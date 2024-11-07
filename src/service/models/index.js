@@ -45,8 +45,6 @@ export const createModel = async (request) => {
   formData.append("capacity", request.capacity);
   formData.append("type_id", request.typeId);
   formData.append("manufacture_id", request.manufactureId);
-  formData.append("options_id", request.OptionId);
-  formData.append("specs_id", request.SpecId);
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/models`, {
     headers: {
