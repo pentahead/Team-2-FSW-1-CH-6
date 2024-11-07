@@ -14,12 +14,12 @@ const router = createRouter({ routeTree });
 // Render the app
 const rootElement = document.getElementById("root");
 if (!rootElement.innerHTML) {
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(
-        <StrictMode>
-            <Provider store={store}>
-                <RouterProvider router={router} />
-            </Provider>
-        </StrictMode>
-    );
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <StrictMode>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </StrictMode>
+  );
 }
