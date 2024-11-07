@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import {
   Button,
   Container,
@@ -28,7 +28,12 @@ const Hero = () => {
                 kualitas terbaik dengan harga terjangkau. Selalu siap melayani
                 kebutuhanmu untuk sewa mobil selama 24 jam.
               </p>
-              <Button variant="success" className="text-white">
+              <Button
+                as={Link}
+                to="/cars"
+                variant="success"
+                className="text-white"
+              >
                 Mulai Sewa Mobil
               </Button>
             </Col>
@@ -568,7 +573,11 @@ const CtaBanner = () => {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
-              <Button className="btn btn-success text-white">
+              <Button
+                as={Link}
+                to="/cars"
+                className="btn btn-success text-white"
+              >
                 Mulai Sewa Mobil
               </Button>
             </Col>
@@ -607,7 +616,6 @@ const Faq = () => {
                         className="w-100 text-decoration-none text-black text-start d-flex justify-content-between align-items-center"
                       >
                         <span>{question}</span>
-                      
                       </Dropdown.Toggle>
                       <Dropdown.Menu className="w-100">
                         <Dropdown.Item href="#">Action</Dropdown.Item>

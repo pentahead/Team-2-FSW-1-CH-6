@@ -16,7 +16,9 @@ const NavigationBar = () => {
           className="mb-0"
         >
           <Container>
-            <Navbar.Brand href="#">Binar Car Rental</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/">
+              Binar Car Rental
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -30,21 +32,21 @@ const NavigationBar = () => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3 text-black">
-                  <Nav.Link as={Link} to="#our-service">
+                  <Nav.Link as={Link} to="/#our-service">
                     Our Service
                   </Nav.Link>
-                  <Nav.Link as={Link} to="#why-us">
+                  <Nav.Link as={Link} to="/#why-us">
                     Why Us
                   </Nav.Link>
-                  <Nav.Link as={Link} to="#testimonial">
+                  <Nav.Link as={Link} to="/#testimonial">
                     Testimonial
                   </Nav.Link>
-                  <Nav.Link as={Link} to="#faq">
+                  <Nav.Link as={Link} to="/#faq">
                     FAQ
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
-                    to="#register"
+                    to="/register"
                     className="rounded-3 bg-success text-white px-3"
                   >
                     Register
