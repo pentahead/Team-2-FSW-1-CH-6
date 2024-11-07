@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
 import { getTransmission } from "../../service/transmission";
 import { getType } from "../../service/type";
 import { getManufacture } from "../../service/manufacture";
@@ -39,51 +38,33 @@ function CreateModel() {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
-    const getTransmissionData = async () => {
-      const result = await getTransmission();
-      if (result?.success) {
-        setTransmission(result?.data);
-      }
-    };
-    const getTypeData = async () => {
-      const result = await getType();
-      if (result?.success) {
-        setType(result?.data);
-      }
-    };
-    const getManufactureData = async () => {
-      const result = await getManufacture();
-      if (result?.success) {
-        setManufacture(result?.data);
-      }
-    };
-    const getSpecData = async () => {
-      const result = await getSpecs();
-      if (result?.success) {
-        setSpec(result?.data);
-      }
-    };
-    const getOptionData = async () => {
-      const result = await getOption();
-      if (result?.success) {
-        setOption(result?.data);
-      }
+    const fetchData = async () => {
+      const transmissionResult = await getTransmission();
+      if (transmissionResult?.success)
+        setTransmission(transmissionResult?.data);
+
+      const typeResult = await getType();
+      if (typeResult?.success) setType(typeResult?.data);
+
+      const manufactureResult = await getManufacture();
+      if (manufactureResult?.success) setManufacture(manufactureResult?.data);
+
+      const specResult = await getSpecs();
+      if (specResult?.success) setSpec(specResult?.data);
+
+      const optionResult = await getOption();
+      if (optionResult?.success) setOption(optionResult?.data);
     };
 
-    getTransmissionData();
-    getTypeData();
-    getManufactureData();
-    getSpecData();
-    getOptionData();
+    fetchData();
   }, []);
 
   const handleSpecChange = (event) => {
     const specId = parseInt(event.target.value, 10);
-    setSelectedSpecs(
-      (prevSpecs) =>
-        prevSpecs.includes(specId)
-          ? prevSpecs.filter((id) => id !== specId) // Hapus jika sudah ada
-          : [...prevSpecs, specId] // Tambahkan jika belum ada
+    setSelectedSpecs((prevSpecs) =>
+      prevSpecs.includes(specId)
+        ? prevSpecs.filter((id) => id !== specId)
+        : [...prevSpecs, specId]
     );
   };
 
@@ -101,20 +82,20 @@ function CreateModel() {
 
     const request = {
       modelName,
-      transmissionId,
+      transmissionId: parseInt(transmissionId, 10),
       capacity,
-      typeId,
-      manufactureId,
-      specs: selectedSpecs, // Kirim array specs yang dipilih
-      options: selectedOptions,
+      typeId: parseInt(typeId, 10),
+      manufactureId: parseInt(manufactureId, 10),
+      specIds: selectedSpecs,
+      optionIds: selectedOptions,
     };
+
     const result = await createModel(request);
     if (result?.success) {
       navigate({ to: "/models" });
-      return;
+    } else {
+      alert(result?.message);
     }
-
-    alert(result?.message);
   };
 
   return (
@@ -134,9 +115,7 @@ function CreateModel() {
                     placeholder="Name"
                     required
                     value={modelName}
-                    onChange={(event) => {
-                      setModelName(event.target.value);
-                    }}
+                    onChange={(event) => setModelName(event.target.value)}
                   />
                 </Col>
               </Form.Group>
@@ -146,19 +125,19 @@ function CreateModel() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
                     value={transmissionId}
-                    onChange={(event) => setTransmissionId(event.target.value)}
+                    onChange={(event) =>
+                      setTransmissionId(parseInt(event.target.value, 10))
+                    }
                   >
-                    <option disabled selected>
-                      Select Transmision
+                    <option value="" disabled>
+                      Select Transmission
                     </option>
-                    {Transmission.length > 0 &&
-                      Transmission.map((transmission) => (
-                        <option key={transmission?.id} value={transmission?.id}>
-                          {transmission?.transmission_name}
-                        </option>
-                      ))}
+                    {Transmission.map((transmission) => (
+                      <option key={transmission.id} value={transmission.id}>
+                        {transmission.transmission_name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
@@ -172,9 +151,7 @@ function CreateModel() {
                     placeholder="Capacity"
                     required
                     value={capacity}
-                    onChange={(event) => {
-                      setCapacity(event.target.value);
-                    }}
+                    onChange={(event) => setCapacity(event.target.value)}
                   />
                 </Col>
               </Form.Group>
@@ -184,19 +161,19 @@ function CreateModel() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
                     value={typeId}
-                    onChange={(event) => setTypeId(event.target.value)}
+                    onChange={(event) =>
+                      setTypeId(parseInt(event.target.value, 10))
+                    }
                   >
-                    <option disabled selected>
+                    <option value="" disabled>
                       Select Type
                     </option>
-                    {Type.length > 0 &&
-                      Type.map((type) => (
-                        <option key={type?.id} value={type?.id}>
-                          {type?.type_name}
-                        </option>
-                      ))}
+                    {Type.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.type_name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
@@ -206,19 +183,19 @@ function CreateModel() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
                     value={manufactureId}
-                    onChange={(event) => setManufactureId(event.target.value)}
+                    onChange={(event) =>
+                      setManufactureId(parseInt(event.target.value, 10))
+                    }
                   >
-                    <option disabled selected>
+                    <option value="" disabled>
                       Select Manufacture
                     </option>
-                    {Manufacture.length > 0 &&
-                      Manufacture.map((manufacture) => (
-                        <option key={manufacture?.id} value={manufacture?.id}>
-                          {manufacture?.manufacture_name}
-                        </option>
-                      ))}
+                    {Manufacture.map((manufacture) => (
+                      <option key={manufacture.id} value={manufacture.id}>
+                        {manufacture.manufacture_name}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
@@ -230,16 +207,15 @@ function CreateModel() {
                   {Spec.map((spec) => (
                     <Form.Check
                       type="checkbox"
-                      key={spec?.id}
-                      label={spec?.spec_name}
-                      value={spec?.id}
-                      checked={selectedSpecs.includes(spec?.id)}
+                      key={spec.id}
+                      label={spec.spec_name}
+                      value={spec.id}
+                      checked={selectedSpecs.includes(spec.id)}
                       onChange={handleSpecChange}
                     />
                   ))}
                 </Col>
               </Form.Group>
-
               <Form.Group as={Row} className="mb-3" controlId="option_id">
                 <Form.Label column sm={3}>
                   Option
@@ -248,16 +224,15 @@ function CreateModel() {
                   {Option.map((option) => (
                     <Form.Check
                       type="checkbox"
-                      key={option?.id}
-                      label={option?.option_name}
-                      value={option?.id}
-                      checked={selectedOptions.includes(option?.id)}
+                      key={option.id}
+                      label={option.option_name}
+                      value={option.id}
+                      checked={selectedOptions.includes(option.id)}
                       onChange={handleOptionChange}
                     />
                   ))}
                 </Col>
               </Form.Group>
-
               <div className="d-grid gap-2">
                 <Button type="submit" variant="primary">
                   Create Model
@@ -271,3 +246,5 @@ function CreateModel() {
     </Row>
   );
 }
+
+export default CreateModel;

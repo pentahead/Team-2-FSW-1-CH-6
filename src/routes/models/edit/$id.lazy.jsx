@@ -10,6 +10,9 @@ import { getTransmission } from "../../../service/transmission";
 import { getType } from "../../../service/type";
 import { getManufacture } from "../../../service/manufacture";
 import { getDetailModel, updateModel } from "../../../service/models";
+import { getSpecs } from "../../../service/specs";
+import { getModels } from "../../../service/models";
+import { getOption } from "../../../service/option";
 import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/models/edit/$id")({
@@ -32,32 +35,38 @@ function EditModel() {
   const [typeId, setTypeId] = useState(0);
   const [Manufacture, setManufacture] = useState([]);
   const [manufactureId, setManufactureId] = useState(0);
+  const [Spec, setSpec] = useState([]);
+  const [selectedSpecs, setSelectedSpecs] = useState([]);
+  const [Option, setOption] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getTransmissionData = async () => {
-      const result = await getTransmission();
-      if (result?.success) {
-        setTransmission(result?.data);
-      }
-    };
-    const getTypeData = async () => {
-      const result = await getType();
-      if (result?.success) {
-        setType(result?.data);
-      }
-    };
-    const getManufactureData = async () => {
-      const result = await getManufacture();
-      if (result?.success) {
-        setManufacture(result?.data);
-      }
+    const fetchData = async () => {
+      const [
+        transmissionResult,
+        typeResult,
+        manufactureResult,
+        specResult,
+        optionResult,
+      ] = await Promise.all([
+        getTransmission(),
+        getType(),
+        getManufacture(),
+        getSpecs(),
+        getOption(),
+      ]);
+      if (transmissionResult?.success)
+        setTransmission(transmissionResult?.data);
+      if (typeResult?.success) setType(typeResult?.data);
+      if (manufactureResult?.success) setManufacture(manufactureResult?.data);
+      if (specResult?.success) setSpec(specResult?.data);
+      if (optionResult?.success) setOption(optionResult?.data);
+      setIsLoading(false);
     };
 
-    getTransmissionData();
-    getTypeData();
-    getManufactureData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -70,6 +79,8 @@ function EditModel() {
         setCapacity(result.data?.capacity);
         setTypeId(result.data?.type_id);
         setManufactureId(result.data?.manufacture_id);
+        setSelectedOptions(result.data?.option_id || []);
+        setSelectedSpecs(result.data?.spec_id || []);
         setIsNotFound(false);
       } else {
         setIsNotFound(true);
@@ -84,19 +95,40 @@ function EditModel() {
 
   if (isNotFound) {
     navigate({ to: "/models" });
-    return;
+    return null;
   }
+
+  const handleSpecChange = (event) => {
+    const specId = parseInt(event.target.value, 10);
+    setSelectedSpecs((prevSpecs) =>
+      prevSpecs.includes(specId)
+        ? prevSpecs.filter((id) => id !== specId)
+        : [...prevSpecs, specId]
+    );
+  };
+
+  const handleOptionChange = (event) => {
+    const optionId = parseInt(event.target.value, 10);
+    setSelectedOptions((prevOptions) =>
+      prevOptions.includes(optionId)
+        ? prevOptions.filter((id) => id !== optionId)
+        : [...prevOptions, optionId]
+    );
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
     const request = {
       modelName,
-      transmissionId,
+      transmissionId: parseInt(transmissionId, 10),
       capacity,
-      typeId,
-      manufactureId,
+      typeId: parseInt(typeId, 10),
+      manufactureId: parseInt(manufactureId, 10),
+      specIds: selectedSpecs,
+      optionIds: selectedOptions,
     };
+
     const result = await updateModel(id, request);
     if (result?.success) {
       navigate({ to: `/models/${id}` });
@@ -115,7 +147,7 @@ function EditModel() {
             <Form onSubmit={onSubmit}>
               <Form.Group as={Row} className="mb-3" controlId="name">
                 <Form.Label column sm={3}>
-                  Model Name
+                  Name
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
@@ -123,36 +155,34 @@ function EditModel() {
                     placeholder="Name"
                     required
                     value={modelName}
-                    onChange={(event) => {
-                      setModelName(event.target.value);
-                    }}
+                    onChange={(e) => setModelName(e.target.value)}
                   />
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row} className="mb-3" controlId="transmission_id">
                 <Form.Label column sm={3}>
                   Transmission
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
-                    onChange={(event) => setTransmissionId(event.target.value)}
+                    value={transmissionId}
+                    onChange={(e) =>
+                      setTransmissionId(parseInt(e.target.value, 10))
+                    }
                   >
                     <option disabled>Select Transmission</option>
                     {!isLoading &&
                       Transmission.length > 0 &&
                       Transmission.map((transmission) => (
-                        <option
-                          key={transmission.id}
-                          value={transmission.id}
-                          selected={transmission.id == transmissionId}
-                        >
-                          {transmission?.transmission_name}
+                        <option key={transmission.id} value={transmission.id}>
+                          {transmission.transmission_name}
                         </option>
                       ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row} className="mb-3" controlId="capacity">
                 <Form.Label column sm={3}>
                   Capacity
@@ -163,70 +193,100 @@ function EditModel() {
                     placeholder="Capacity"
                     required
                     value={capacity}
-                    onChange={(event) => {
-                      setCapacity(event.target.value);
-                    }}
+                    onChange={(e) => setCapacity(e.target.value)}
                   />
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row} className="mb-3" controlId="type_id">
                 <Form.Label column sm={3}>
                   Type
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
-                    onChange={(event) => setTypeId(event.target.value)}
+                    value={typeId}
+                    onChange={(e) => setTypeId(parseInt(e.target.value, 10))}
                   >
                     <option disabled>Select Type</option>
                     {!isLoading &&
                       Type.length > 0 &&
                       Type.map((type) => (
-                        <option
-                          key={type.id}
-                          value={type.id}
-                          selected={type.id == typeId}
-                        >
-                          {type?.type_name}
+                        <option key={type.id} value={type.id}>
+                          {type.type_name}
                         </option>
                       ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row} className="mb-3" controlId="manufacture_id">
                 <Form.Label column sm={3}>
                   Manufacture
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    aria-label="Default select example"
-                    onChange={(event) => setManufactureId(event.target.value)}
+                    value={manufactureId}
+                    onChange={(e) =>
+                      setManufactureId(parseInt(e.target.value, 10))
+                    }
                   >
                     <option disabled>Select Manufacture</option>
                     {!isLoading &&
                       Manufacture.length > 0 &&
                       Manufacture.map((manufacture) => (
-                        <option
-                          key={manufacture.id}
-                          value={manufacture.id}
-                          selected={manufacture.id == manufactureId}
-                        >
-                          {manufacture?.manufacture_name}
+                        <option key={manufacture.id} value={manufacture.id}>
+                          {manufacture.manufacture_name}
                         </option>
                       ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
-              <div className="d-grid gap-2">
-                <Button type="submit" variant="primary">
-                  Edit Model
+
+              <Form.Group as={Row} className="mb-3" controlId="spec_id">
+                <Form.Label column sm={3}>
+                  Spec
+                </Form.Label>
+                <Col sm="9">
+                  {Spec.map((spec) => (
+                    <Form.Check
+                      type="checkbox"
+                      key={spec.id}
+                      label={spec.spec_name}
+                      value={spec.id}
+                      checked={selectedSpecs.includes(spec.id)}
+                      onChange={handleSpecChange}
+                    />
+                  ))}
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} className="mb-3" controlId="option_id">
+                <Form.Label column sm={3}>
+                  Option
+                </Form.Label>
+                <Col sm="9">
+                  {Option.map((option) => (
+                    <Form.Check
+                      type="checkbox"
+                      key={option.id}
+                      label={option.option_name}
+                      value={option.id}
+                      checked={selectedOptions.includes(option.id)}
+                      onChange={handleOptionChange}
+                    />
+                  ))}
+                </Col>
+              </Form.Group>
+
+              <div className="text-center">
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Saving..." : "Save"}
                 </Button>
               </div>
             </Form>
           </Card.Body>
         </Card>
       </Col>
-      <Col md={3}></Col>
     </Row>
   );
 }

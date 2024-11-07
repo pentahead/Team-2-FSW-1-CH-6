@@ -46,6 +46,11 @@ export const createModel = async (request) => {
   formData.append("type_id", request.typeId);
   formData.append("manufacture_id", request.manufactureId);
 
+  request.optionIds.forEach((optionId) =>
+    formData.append("option_id", optionId)
+  );
+  request.specIds.forEach((specId) => formData.append("spec_id", specId));
+
   const response = await fetch(`${import.meta.env.VITE_API_URL}/models`, {
     headers: {
       authorization: `Bearer ${token}`,
@@ -68,8 +73,10 @@ export const updateModel = async (id, request) => {
   formData.append("capacity", request.capacity);
   formData.append("type_id", request.typeId);
   formData.append("manufacture_id", request.manufactureId);
-  formData.append("options_id", request.OptionId);
-  formData.append("specs_id", request.SpecId);
+  request.optionIds.forEach((optionId) =>
+    formData.append("option_id", optionId)
+  );
+  request.specIds.forEach((specId) => formData.append("spec_id", specId));
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/models/${id}`, {
     headers: {

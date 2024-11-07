@@ -92,13 +92,42 @@ function ModelDetail() {
           <Card.Body>
             <Card.Title>Model: {model?.model_name}</Card.Title>
             <Card.Text>
-              Transmision: {model?.Transmission?.transmission_name}
+              Transmission: {model?.Transmission?.transmission_name}
             </Card.Text>
             <Card.Text>Capacity: {model?.capacity}</Card.Text>
             <Card.Text>Type: {model?.Type?.type_name}</Card.Text>
             <Card.Text>
               Manufacture: {model?.Manufacture?.manufacture_name}
             </Card.Text>
+
+            {/* Menampilkan Model Options */}
+            <Card.Text>
+              Option:
+              {model?.modelOptions && model.modelOptions.length > 0 ? (
+                <ul>
+                  {model.modelOptions.map((modelOption, index) => (
+                    <li key={index}>{modelOption.Options.option_name}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span>No options available</span>
+              )}
+            </Card.Text>
+
+            {/* Menampilkan Model Specs */}
+            <Card.Text>
+              Spec:
+              {model?.modelSpecs && model.modelSpecs.length > 0 ? (
+                <ul>
+                  {model.modelSpecs.map((modelSpec, index) => (
+                    <li key={index}>{modelSpec.Specs.spec_name}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span>No specs available</span>
+              )}
+            </Card.Text>
+
             <Card.Text>
               <div className="d-grid gap-2">
                 <Button
