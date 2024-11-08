@@ -8,7 +8,7 @@ import {
   Col,
   ListGroup,
   Card,
-  Dropdown,
+  Accordion,
   DropdownButton,
 } from "react-bootstrap";
 import GuestLayout from "../layouts/GuestLayout";
@@ -31,7 +31,7 @@ const Hero = () => {
               </p>
               <Button
                 as={Link}
-                to="/cars"
+                to="/findcars"
                 variant="success"
                 className="text-white"
               >
@@ -576,7 +576,7 @@ const CtaBanner = () => {
               </p>
               <Button
                 as={Link}
-                to="/cars"
+                to="/findcars"
                 className="btn btn-success text-white"
               >
                 Mulai Sewa Mobil
@@ -590,50 +590,70 @@ const CtaBanner = () => {
 };
 const Faq = () => {
   return (
-    <>
-      <section id="faq">
-        <Container className="py-5 my-5">
-          <Row className="d-flex flex-column flex-lg-row">
-            <Col
-              lg={6}
-              className="d-flex flex-column justify-content-center justify-content-lg-start"
-            >
-              <h1>Frequently Asked Question</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-            </Col>
-            <Col lg={6}>
-              <ListGroup className="gap-3 ">
-                {[
-                  "Apa saja syarat yang dibutuhkan?",
-                  "Berapa hari minimal sewa mobil lepas kunci?",
-                  "Berapa hari sebelumnya sabaiknya booking sewa mobil?",
-                  "Apakah Ada biaya antar-jemput?",
-                  "Bagaimana jika terjadi kecelakaan",
-                ].map((question, idx) => (
-                  <ListGroup.Item key={idx}>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        variant="link"
-                        className="w-100 text-decoration-none text-black text-start d-flex justify-content-between align-items-center"
-                      >
-                        <span>{question}</span>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu className="w-100">
-                        <Dropdown.Item href="#">Action</Dropdown.Item>
-                        <Dropdown.Item href="#">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#">
-                          Something else here
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </>
+    <section id="faq" className="my-5">
+      <Container>
+        <Row>
+          <Col md={6}>
+            <h2 className="fw-bold">Frequently Asked Question</h2>
+            <h6>
+              Pertanyaan yang sering ditanyakan customer, cek pertanyaan Anda di
+              sini!
+            </h6>
+          </Col>
+          <Col md={6}>
+            <Accordion defaultActiveKey="0" flush>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  Apa saja syarat yang dibutuhkan?
+                </Accordion.Header>
+                <Accordion.Body>
+                  Syarat yang umumnya diperlukan untuk menyewa mobil adalah:
+                  Kartu identitas resmi (KTP/SIM/Passport) SIM yang masih
+                  berlaku (minimal SIM A untuk mobil) Deposit pembayaran atau
+                  jaminan sesuai ketentuan penyedia jasa sewa Formulir atau
+                  perjanjian sewa yang harus ditandatangani.
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>
+                  Berapa hari sebelumnya sebaiknya booking sewa mobil?
+                </Accordion.Header>
+                <Accordion.Body>
+                  Disarankan untuk melakukan booking minimal 2-3 hari
+                  sebelumnya, terutama di musim liburan atau saat permintaan
+                  tinggi, agar Anda mendapatkan mobil sesuai kebutuhan dan
+                  pilihan yang lebih beragam.
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>
+                  Apakah ada biaya antar-jemput?
+                </Accordion.Header>
+                <Accordion.Body>
+                  Biaya antar-jemput mungkin dikenakan tergantung pada kebijakan
+                  penyedia jasa sewa mobil. Ada beberapa yang menyediakan
+                  layanan ini secara gratis dalam jarak tertentu, namun ada pula
+                  yang mengenakan biaya tambahan berdasarkan jarak atau lokasi.
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="3">
+                <Accordion.Header>
+                  Bagaimana jika terjadi kecelakaan?
+                </Accordion.Header>
+                <Accordion.Body>
+                  Jika terjadi kecelakaan, segera hubungi pihak penyedia jasa
+                  sewa untuk melaporkan kejadian tersebut. Pastikan Anda
+                  memahami asuransi yang termasuk dalam paket sewa, karena
+                  beberapa penyedia jasa sewa menawarkan asuransi yang mencakup
+                  kerusakan kendaraan, tetapi ada juga yang meminta penyewa
+                  bertanggung jawab atas kerusakan tertentu.
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Col>
+        </Row>
+      </Container>
+    </section>
   );
 };
 
