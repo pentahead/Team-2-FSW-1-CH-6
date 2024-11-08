@@ -91,9 +91,9 @@ export const updateCar = async (id, request) => {
   formData.append("availableAt", formattedDate);
   formData.append("year", request.year ? String(request.year) : "");
 
-  formData.append("availability_id", request.availableStatus || "Available");
+  formData.append("availability_id", request.availableStatus);
 
-  formData.append("model_id", request.modelId ? String(request.modelId) : "0");
+  formData.append("model_id", request.modelId);
 
   if (request.image) {
     formData.append("image", request.image);
@@ -105,7 +105,7 @@ export const updateCar = async (id, request) => {
     headers: {
       authorization: `Bearer ${token}`,
     },
-    method: "PUT", 
+    method: "PUT",
     body: formData,
   });
 
@@ -113,7 +113,6 @@ export const updateCar = async (id, request) => {
   const result = await response.json();
   return result;
 };
-
 
 export const deleteCar = async (id) => {
   const token = localStorage.getItem("token");
