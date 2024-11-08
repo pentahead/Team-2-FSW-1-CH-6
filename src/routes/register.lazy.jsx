@@ -1,10 +1,10 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { register } from "../service/auth";
 
@@ -14,7 +14,6 @@ export const Route = createLazyFileRoute("/register")({
 
 function Register() {
   const navigate = useNavigate();
-
   const { token } = useSelector((state) => state.auth);
 
   const [name, setName] = useState("");
@@ -23,142 +22,120 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profilePicture, setProfilePicture] = useState(undefined);
 
-  useEffect(() => {
-    // get token from local storage
-    if (token) {
-      navigate({ to: "/" });
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate({ to: "/" });
+  //   }
+  // }, [token, navigate]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    if (password != confirmPassword) {
-      alert("Password and password confirmation must be same!");
+    if (password !== confirmPassword) {
+      alert("Password and password confirmation must be the same!");
+      return;
     }
 
-    // hit API here
     const request = {
       name,
       email,
       password,
       profilePicture,
     };
+
     const result = await register(request);
     if (result.success) {
-      // save token to local storage
       localStorage.setItem("token", result.data.token);
-
-      // redirect to home
       window.location = "/";
-
-      return;
+    } else {
+      alert(result.message);
     }
-
-    alert(result.message);
   };
 
   return (
-    <Row className="mt-5">
-      <Col className="offset-md-3">
-        <Card>
-          <Card.Header className="text-center">Register</Card.Header>
-          <Card.Body>
-            <Form onSubmit={onSubmit}>
-              <Form.Group as={Row} className="mb-3" controlId="name">
-                <Form.Label column sm="3">
-                  Name
-                </Form.Label>
-                <Col sm="9">
-                  <Form.Control
-                    type="text"
-                    placeholder="Name"
-                    required
-                    value={name}
-                    onChange={(event) => {
-                      setName(event.target.value);
-                    }}
-                  />
-                </Col>
+    <section className="d-flex z-1 bg-light justify-content-center align-items-center vh-100 bg-login position-relative overflow-hidden">
+      <Container>
+        <Row className="justify-content-center position-relative">
+          <Col
+            md={6}
+            lg={4}
+            style={{
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              borderRadius: "0.5rem",
+            }}
+            className="bg-transparent rounded-4 shadow-lg p-4 position-relative"
+          >
+            <div className="text-center mt-4">
+              <h2 className="fw-bold">Register</h2>
+            </div>
+
+            <Form onSubmit={onSubmit} className="z-3 p-5">
+              <Form.Group className="mb-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="email">
-                <Form.Label column sm={3}>
-                  Email
-                </Form.Label>
-                <Col sm={9}>
-                  <Form.Control
-                    type="email"
-                    placeholder="Email"
-                    required
-                    value={email}
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                    }}
-                  />
-                </Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="password">
-                <Form.Label column sm={3}>
-                  Password
-                </Form.Label>
-                <Col sm={9}>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={password}
-                    onChange={(event) => {
-                      setPassword(event.target.value);
-                    }}
-                  />
-                </Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="confirmPassword">
-                <Form.Label column sm={3}>
-                  Confirm Password
-                </Form.Label>
-                <Col sm={9}>
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm Password"
-                    required
-                    value={confirmPassword}
-                    onChange={(event) => {
-                      setConfirmPassword(event.target.value);
-                    }}
-                  />
-                </Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="profilePicture">
-                <Form.Label column sm={3}>
-                  Profile Picture
-                </Form.Label>
-                <Col sm={9}>
-                  <Form.Control
-                    type="file"
-                    placeholder="Choose File"
-                    required
-                    onChange={(event) => {
-                      setProfilePicture(event.target.files[0]);
-                    }}
-                    accept=".jpg,.png"
-                  />
-                </Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  placeholder="Choose File"
+                  onChange={(e) => setProfilePicture(e.target.files[0])}
+                  accept=".jpg,.png"
+                  required
+                />
               </Form.Group>
-              <div className="d-grid gap-2">
-                <Button type="submit" variant="primary">
-                  Register
-                </Button>
-              </div>
+
+              <Button variant="dark" type="submit" className="w-100 mt-3">
+                Register
+              </Button>
             </Form>
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={3}></Col>
-    </Row>
+          </Col>
+          <div className="decoration position-absolute top-50 end-50 start-50 z-n1 start-0 translate-middle">
+            <img src="img/car2.png" alt="Decoration" className="img-fluid" />
+          </div>
+        </Row>
+      </Container>
+    </section>
   );
 }
