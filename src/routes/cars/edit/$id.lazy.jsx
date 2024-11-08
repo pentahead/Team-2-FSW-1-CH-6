@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import { getModels } from "../../../service/models";
 import { getAvailables } from "../../../service/availables";
-import { getDetailCar, updateCar } from "../../../service/cars"; 
+import { getDetailCar, updateCar } from "../../../service/cars";
 import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/cars/edit/$id")({
@@ -29,14 +29,13 @@ function EditCar() {
   const [description, setDescription] = useState("");
   const [availableAt, setAvailableAt] = useState("");
   const [year, setYear] = useState("");
-  const [availableStatus, setAvailableStatus] = useState("");
   const [image, setImage] = useState(null);
-  const [modelId, setModelId] = useState(""); 
 
+  const [modelId, setModelId] = useState(0);
   const [models, setModels] = useState([]);
-  const [availableStatuses, setAvailableStatuses] = useState([]);
+  const [availableStatus, setAvailableStatus] = useState(0); //ini namanya
+  const [availableStatuses, setAvailableStatuses] = useState([]); //ini idnya
 
-  // Fetch models and available statuses
   useEffect(() => {
     const fetchData = async () => {
       const modelResult = await getModels();
@@ -49,7 +48,6 @@ function EditCar() {
     fetchData();
   }, []);
 
-  // Fetch car detail for editing
   useEffect(() => {
     const getDetailCarData = async (id) => {
       setIsLoading(true);
@@ -61,8 +59,8 @@ function EditCar() {
         setDescription(carData.description);
         setAvailableAt(carData.availableAt);
         setYear(carData.year);
-        setAvailableStatus(carData.availableStatus);
-        setModelId(carData.modelId || ""); // Set modelId correctly
+        setAvailableStatus(carData?.Available?.id);
+        setModelId(carData?.Models?.id);
         setImage(carData.image);
         setIsNotFound(false);
       } else {
@@ -81,13 +79,11 @@ function EditCar() {
     return null;
   }
 
-  // Handle form submission
   const onSubmit = async (event) => {
     event.preventDefault();
 
     const rentPerDayNum = parseInt(rentPerDay, 10);
     const yearNum = parseInt(year, 10);
-    const modelIdNum = parseInt(modelId, 10);
 
     const request = {
       plate,
@@ -96,7 +92,7 @@ function EditCar() {
       availableAt,
       year: yearNum,
       availableStatus,
-      modelId: modelIdNum,
+      modelId,
       image,
     };
 
@@ -108,7 +104,6 @@ function EditCar() {
     }
   };
 
-  // Jangan render form jika data belum dimuat
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -200,14 +195,21 @@ function EditCar() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    value={availableStatus}
+                    aria-label="Default select example"
                     onChange={(e) => setAvailableStatus(e.target.value)}
                   >
-                    {availableStatuses.map((status) => (
-                      <option key={status.id} value={status.id}>
-                        {status.available_status}
-                      </option>
-                    ))}
+                    <option disabled>Select Availabe</option>
+                    {!isLoading &&
+                      availableStatuses.length > 0 &&
+                      availableStatuses.map((status) => (
+                        <option
+                          key={status.id}
+                          value={status.id}
+                          selected={status.id == availableStatus}
+                        >
+                          {status.available_status}
+                        </option>
+                      ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
@@ -231,14 +233,20 @@ function EditCar() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Select
-                    value={modelId}
+                    aria-label="Default select example"
                     onChange={(e) => setModelId(e.target.value)}
                   >
-                    {models.map((model) => (
-                      <option key={model.id} value={model.id}>
-                        {model.model_name}
-                      </option>
-                    ))}
+                    {!isLoading &&
+                      models.length > 0 &&
+                      models.map((model) => (
+                        <option
+                          key={model.id}
+                          value={model.id}
+                          selected={model.id == modelId}
+                        >
+                          {model.model_name}
+                        </option>
+                      ))}
                   </Form.Select>
                 </Col>
               </Form.Group>
