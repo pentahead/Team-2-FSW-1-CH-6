@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Container, Row, Col, Button, Form, Image } from "react-bootstrap";
+import GuestLayout from "../layouts/GuestLayout";
 
 export const Route = createLazyFileRoute("/cars")({
   component: Cars,
@@ -108,70 +109,14 @@ const ResultSection = () => {
   );
 };
 
-const Footer = () => {
-  return (
-    <footer>
-      <Container className="py-1 mt-5">
-        <Row className="d-flex flex-column flex-lg-row">
-          <Col className="d-flex flex-column align-items-between">
-            <p>Jalan Suroyo No. 161 Mayangan Kota Probolonggo 672000</p>
-            <p>binarcarrental@gmail.com</p>
-            <p>081-233-334-808</p>
-          </Col>
-          <Col className="d-flex flex-column align-items-between fw-medium">
-            <a className="nav-link active" href="#our-service">
-              Our Service
-            </a>
-            <a className="nav-link text-black" href="#why-us">
-              Why Us
-            </a>
-            <a className="nav-link text-black" href="#testimonial">
-              Testimonial
-            </a>
-            <a className="nav-link text-black" href="#faq">
-              FAQ
-            </a>
-          </Col>
-          <Col>
-            <Row>
-              <p>Connect with us</p>
-            </Row>
-            <Row>
-              <ul className="d-flex gap-2">
-                <li className="list-group">
-                  <a href="#">{/* Insert social media icons here */}</a>
-                </li>
-                {/* Repeat for other social media icons */}
-              </ul>
-            </Row>
-          </Col>
-          <Col>
-            <Row>
-              <p>Copyright Binar 2022</p>
-            </Row>
-            <Row className="container">
-              <div
-                style={{
-                  height: "36px",
-                  width: "100px",
-                  backgroundColor: "#0d28a6",
-                }}
-              ></div>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </footer>
-  );
-};
-
 function Cars() {
   return (
     <>
-      <HeroSection />
-      <SearchSection />
-      <ResultSection />
-      <Footer />
+      <GuestLayout>
+        <HeroSection />
+        <SearchSection />
+        <ResultSection />
+      </GuestLayout>
     </>
   );
 }

@@ -6,6 +6,7 @@ export const login = async (request) => {
       "Content-Type": "application/json",
     },
   });
+
   // get the data if fetching succeed!
   const result = await response.json();
   return result;
@@ -16,7 +17,7 @@ export const register = async (request) => {
   formData.append("name", request.name);
   formData.append("email", request.email);
   formData.append("password", request.password);
-  formData.append("profilePicture", request.profilePicture);
+  formData.append("profile_picture", request.profilePicture);
 
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/auth/register`,
@@ -25,6 +26,8 @@ export const register = async (request) => {
       body: formData,
     }
   );
+
+  // get the data if fetching succeed!
   const result = await response.json();
   return result;
 };
