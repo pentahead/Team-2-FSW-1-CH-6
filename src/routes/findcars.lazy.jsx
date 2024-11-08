@@ -1,8 +1,8 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Container, Row, Col, Button, Form, Image } from "react-bootstrap";
 
-export const Route = createLazyFileRoute("/cars")({
-  component: Cars,
+export const Route = createLazyFileRoute("/findcars")({
+  component: FindCars,
 });
 
 const HeroSection = () => {
@@ -17,9 +17,6 @@ const HeroSection = () => {
               kualitas terbaik dengan harga terjangkau. Selalu siap melayani
               kebutuhanmu untuk sewa mobil selama 24 jam.
             </p>
-            <Button href="#" variant="success" className="text-white">
-              Mulai Sewa Mobil
-            </Button>
           </Col>
 
           <Col
