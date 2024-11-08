@@ -105,7 +105,7 @@ export const updateCar = async (id, request) => {
     headers: {
       authorization: `Bearer ${token}`,
     },
-    method: "PUT", 
+    method: "PUT",
     body: formData,
   });
 
@@ -113,7 +113,6 @@ export const updateCar = async (id, request) => {
   const result = await response.json();
   return result;
 };
-
 
 export const deleteCar = async (id) => {
   const token = localStorage.getItem("token");

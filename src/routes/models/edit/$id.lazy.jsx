@@ -27,7 +27,7 @@ function EditModel() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  const [modelName, setModelName] = useState("");
+  const [model_name, setModelName] = useState("");
   const [Transmission, setTransmission] = useState([]);
   const [transmissionId, setTransmissionId] = useState(0);
   const [capacity, setCapacity] = useState("");
@@ -74,7 +74,7 @@ function EditModel() {
       setIsLoading(true);
       const result = await getDetailModel(id);
       if (result?.success) {
-        setModelName(result.data?.modelName);
+        setModelName(result.data?.model_name);
         setTransmissionId(result.data?.transmission_id);
         setCapacity(result.data?.capacity);
         setTypeId(result.data?.type_id);
@@ -120,7 +120,7 @@ function EditModel() {
     event.preventDefault();
 
     const request = {
-      modelName,
+      model_name,
       transmissionId: parseInt(transmissionId, 10),
       capacity,
       typeId: parseInt(typeId, 10),
@@ -154,7 +154,7 @@ function EditModel() {
                     type="text"
                     placeholder="Name"
                     required
-                    value={modelName}
+                    value={model_name}
                     onChange={(e) => setModelName(e.target.value)}
                   />
                 </Col>

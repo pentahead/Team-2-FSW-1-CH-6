@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import { getModels } from "../../../service/models";
 import { getAvailables } from "../../../service/availables";
-import { getDetailCar, updateCar } from "../../../service/cars"; 
+import { getDetailCar, updateCar } from "../../../service/cars";
 import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/cars/edit/$id")({
@@ -31,7 +31,7 @@ function EditCar() {
   const [year, setYear] = useState("");
   const [availableStatus, setAvailableStatus] = useState("");
   const [image, setImage] = useState(null);
-  const [modelId, setModelId] = useState(""); 
+  const [modelId, setModelId] = useState("");
 
   const [models, setModels] = useState([]);
   const [availableStatuses, setAvailableStatuses] = useState([]);
