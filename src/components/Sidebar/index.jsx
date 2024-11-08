@@ -43,13 +43,16 @@ function NavbarLocal() {
                 }}
               />
             </Nav.Link>
-            <Dropdown as={ButtonGroup} className="pe-3">
-              <Button variant="success">Split Button</Button>
+            <Dropdown as={ButtonGroup} className="border-0">
+              <Button className="bg-white px-4 text-black border-0">
+                user
+              </Button>
 
               <Dropdown.Toggle
                 split
-                variant="success"
+                // variant="success"
                 id="dropdown-split-basic"
+                className=" bg-white border-0 text-black"
               />
 
               <Dropdown.Menu>
@@ -65,62 +68,144 @@ function NavbarLocal() {
   );
 }
 
-function Sidebar({ children }) {
+function Sidebar({
+  openCars,
+  setOpenCars,
+  openTransmission,
+  setOpenTransmission,
+  openModel,
+  setOpenModel,
+  openManufacture,
+  setOpenManufacture,
+  openType,
+  setOpenType,
+  children,
+}) {
+  const handleClick = (setterFunction) => {
+    setOpenCars(false);
+    setOpenTransmission(false);
+    setOpenModel(false);
+    setOpenManufacture(false);
+    setOpenCars(false);
+    setOpenType(false);
+    setterFunction((prev) => !prev); // Toggle the state
+  };
+
   return (
     <>
       <Container fluid>
-        <Row className="flex-nowrap">
+        <Row className="flex-nowrap w-">
           <Col
             xs="auto"
             md={3}
             xl={2}
-            className="bg-white shadaow-sm px-0 mx-0"
+            className="bg-white shadow-sm px-0 mx-0 "
           >
-            <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-black min-vh-100">
+            <div className="d-flex flex-column align-items-center align-items-sm-start px-0 pt-0 text-black min-vh-100 m-0 p-0">
               <Nav
-                variant="pills"
-                className="flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start "
+                className="flex-column mb-sm-auto align-items-center align-items-sm- w-100 m-0 p-0 m-0"
                 id="menu"
               >
-                <Nav.Item as={Row} className=" bg-primary d-">
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openCars ? { background: "#CFD4ED" } : {}}
+                >
                   <Nav.Link
                     as={Col}
-                    xl={12}
+                    xs="auto"
+                    md={3}
+                    xl={0}
                     href="#"
-                    className="align-middle px-0 text-black w-100"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenCars)}
                   >
-                    <i className="bi bi-house fs-4"></i>
-                    <span className="ms-1 d-none d-sm-inline">Home</span>
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Cars
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openTransmission ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenTransmission)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Transmission
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openModel ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenModel)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Models
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openManufacture ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenManufacture)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Manufacturer
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openType ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenType)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Type
+                    </span>
                   </Nav.Link>
                 </Nav.Item>
               </Nav>
-              <hr className="text-black" />
-              <Dropdown className="pb-4">
-                <Dropdown.Toggle
-                  variant="link"
-                  id="dropdownUser1"
-                  className="d-flex align-items-center text-white text-decoration-none"
-                >
-                  <Image
-                    src="https://github.com/mdo.png"
-                    alt="hugenerd"
-                    width="30"
-                    height="30"
-                    roundedCircle
-                  />
-                  <span className="d-none d-sm-inline mx-1">loser</span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu variant="dark">
-                  <Dropdown.Item href="#">New project...</Dropdown.Item>
-                  <Dropdown.Item href="#">Settings</Dropdown.Item>
-                  <Dropdown.Item href="#">Profile</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item href="#">Sign out</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
             </div>
           </Col>
-          <Col className=" m-0 p-0" style={{ background: "#CFD4ED" }}>
+
+          <Col className="m-0 p-0" style={{ background: "#F4F5F7" }}>
             {children}
           </Col>
         </Row>
@@ -129,11 +214,90 @@ function Sidebar({ children }) {
   );
 }
 
-export default function IndexSidebar({ children }) {
+export default function IndexSidebar({
+  openCars,
+  setOpenCars,
+  openTransmission,
+  setOpenTransmission,
+  openModel,
+  setOpenModel,
+  openManufacture,
+  setOpenManufacture,
+  openType,
+  setOpenType,
+  children,
+}) {
   return (
     <>
-      <NavbarLocal />
-      <Sidebar>{children}</Sidebar>
+      <Container fluid>
+        <Row>
+          <Col
+            xs="auto"
+            md={1}
+            xl={1}
+            className=" p-0"
+            style={{ width: "3rem", background: "#0D28A6" }}
+          >
+            <div className="d-flex flex-column  align-items-center align-items-sm-start  text-black   min-vh-100  m-0 p-0 mt-3 pt-5 ">
+              <Nav
+                // variant="pills"
+                className="flex-column mb-sm-auto align-items-center align-items-sm- w-100 m-0 p-0 m-0"
+                id="menu"
+              >
+                <Nav.Item
+                  as={Row}
+                  className=" w-100  "
+                  // style={{ background: "#CFD4ED" }}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0"
+                  >
+                    <i className="ms-3 ps-3 bi bi-house fs-5 fw-bold text-center"></i>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className=" w-100  "
+                  style={{ background: "#CFD4ED" }}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0"
+                  >
+                    <i className="ms-3 ps-3 bi bi-car-front-fill  fs-5 fw-bold text-center"></i>
+                  </Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </div>
+          </Col>
+          <Col className="p-0 m-0">
+            <NavbarLocal />
+            <Sidebar
+              openCars={openCars}
+              setOpenCars={setOpenCars}
+              openTransmission={openTransmission}
+              setOpenTransmission={setOpenTransmission}
+              openModel={openModel}
+              setOpenModel={setOpenModel}
+              openManufacture={openManufacture}
+              setOpenManufacture={setOpenManufacture}
+              openType={openType}
+              setOpenType={setOpenType}
+            >
+              {children}
+            </Sidebar>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
