@@ -11,6 +11,7 @@ import {
   Accordion,
   DropdownButton,
 } from "react-bootstrap";
+import GuestLayout from "../layouts/GuestLayout";
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
@@ -826,15 +827,14 @@ const Footer = () => {
 function Index() {
   return (
     <>
+      <GuestLayout >
       <Hero />
       <OurService />
       <WhyUs />
       <Testimonial />
-
       <CtaBanner />
-
       <Faq />
-      <Footer />
+      </GuestLayout>
     </>
   );
 }
