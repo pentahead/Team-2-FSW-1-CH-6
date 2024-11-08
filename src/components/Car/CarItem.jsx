@@ -6,75 +6,53 @@ import { Link } from "@tanstack/react-router";
 
 const CarItem = ({ car }) => {
   return (
-    <Col md={3}>
-      <Card style={{ width: "18rem", marginTop: "2rem" }}>
+    <Col md={3} className="d-flex">
+      <Card style={{ width: "18rem", marginTop: "2rem", flex: 1 }}>
         <Card.Img
           variant="top"
           src={car?.image}
           alt={car?.Models?.model_name}
         />
-        <Card.Body className="d-flex flex-column justify-content-between">
-          <Card.Title>
-            {car?.Models?.model_name} -{" "}
-            {car?.Models?.Manufacture?.manufacture_name}
-          </Card.Title>
-          <Card.Text>
-            <strong>Transmission:</strong>{" "}
-            {car?.Models?.Transmission?.transmission_name}
-          </Card.Text>
-          <Card.Text>
-            <strong>Type:</strong> {car?.Models?.Type?.type_name}
-          </Card.Text>
-          <Card.Text>
-            <strong>Capacity:</strong>{" "}
-            {car?.Models?.capacity || "Not specified"}
-          </Card.Text>
-          <Card.Text>
-            <strong>Plate:</strong> {car?.plate}
-          </Card.Text>
-          <Card.Text>
-            <strong>Rent per Day:</strong> Rp {car?.rentPerDay}
-          </Card.Text>
-          <Card.Text>
-            <strong>Year:</strong> {car?.year}
-          </Card.Text>
-          <Card.Text>
-            <strong>Available At:</strong>{" "}
-            {new Date(car?.availableAt).toLocaleDateString()}
-          </Card.Text>
-          <Card.Text>
-            <strong>Description:</strong> {car?.description}
-          </Card.Text>
-          <Card.Text>
-            <strong>Availability:</strong> {car?.Available?.available_status}
-          </Card.Text>
-
+        <Card.Body
+          className="d-flex object-fit-cover flex-column justify-content-between"
+          style={{ minHeight: "18rem" }}
+        >
           <div>
-            <h6>Specifications:</h6>
-            <ul>
-              {car?.Models?.modelSpecs?.map((spec) => (
-                <li key={spec?.Specs?.id}>{spec?.Specs?.spec_name}</li>
-              ))}
-            </ul>
-          </div>
+            <Card.Text>
+              <strong>
+                {car?.Models?.model_name} -{" "}
+                {car?.Models?.Manufacture?.manufacture_name}
+              </strong>
+            </Card.Text>
+            <Card.Title>
+              <h5>
+                <strong> Rp {car?.rentPerDay}/Hari</strong>
+              </h5>
+            </Card.Title>
+            <Card.Text>{car?.description}</Card.Text>
 
-          <div>
-            <h6>Options:</h6>
-            <ul>
-              {car?.Models?.modelOptions?.map((option) => (
-                <li key={option?.Options?.id}>
-                  {option?.Options?.option_name}
+            <Card.Text>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <i class="bi bi-person me-2"></i>{" "}
+                  {car?.Models?.capacity || "Not specified"} Orang
                 </li>
-              ))}
-            </ul>
+                <li class="list-group-item">
+                  <i class="bi bi-gear me-2"></i>{" "}
+                  {car?.Models?.Transmission?.transmission_name}
+                </li>
+                <li class="list-group-item">
+                  <i class="bi bi-calendar me-2"></i> Tahun {car?.year}
+                </li>
+              </ul>
+            </Card.Text>
           </div>
 
           <Button
-            style={{ width: "15rem" }}
             as={Link}
             href={`/cars/${car?.id}`}
             variant="primary"
-            className="mt-auto align-self-center"
+            className="mt-3 w-100"
           >
             Detail Car
           </Button>

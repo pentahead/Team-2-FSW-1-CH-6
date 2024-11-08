@@ -87,73 +87,98 @@ function CarDetail() {
 
   return (
     <Row className="mt-5">
-      <Col className="offset-md-3">
+      <Col md={{ span: 6, offset: 3 }}>
         <Card>
-          <Card.Body>
           <Card.Img
-              variant="top"
-              src={car?.image}
-              alt={car?.Models?.model_name}
-            />
+            variant="top"
+            src={car?.image}
+            alt={car?.Models?.model_name}
+            style={{ maxHeight: "250px", objectFit: "cover" }}
+          />
+          <Card.Body>
             <Card.Title>
-              {car?.Models?.model_name} -{" "}
-              {car?.Models?.Manufacture?.manufacture_name}
+              <h4>
+                <strong>
+                  {car?.Models?.model_name} -{" "}
+                  {car?.Models?.Manufacture?.manufacture_name}
+                </strong>
+              </h4>
             </Card.Title>
-           
 
-            {/* Menampilkan Transmission */}
-            <Card.Text>
-              <strong>Transmission:</strong>{" "}
-              {car?.Models?.Transmission?.transmission_name}
-            </Card.Text>
+            {/* Rent per Day */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Rent per Day:</strong>
+              </span>
+              <span>Rp {car?.rentPerDay}</span>
+            </div>
 
-            {/* Menampilkan Capacity */}
-            <Card.Text>
-              <strong>Capacity:</strong>{" "}
-              {car?.Models?.capacity || "Not specified"}
-            </Card.Text>
+            {/* Availability */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Availability:</strong>
+              </span>
+              <span>{car?.Available?.available_status}</span>
+            </div>
 
-            {/* Menampilkan Type */}
-            <Card.Text>
-              <strong>Type:</strong> {car?.Models?.Type?.type_name}
-            </Card.Text>
+            {/* Available At */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Available At:</strong>
+              </span>
+              <span>{new Date(car?.availableAt).toLocaleDateString()}</span>
+            </div>
 
-            {/* Menampilkan Plate */}
-            <Card.Text>
-              <strong>Plate:</strong> {car?.plate}
-            </Card.Text>
+            {/* Plate */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Plate:</strong>
+              </span>
+              <span>{car?.plate}</span>
+            </div>
 
-            {/* Menampilkan Rent per Day */}
-            <Card.Text>
-              <strong>Rent per Day:</strong> Rp {car?.rentPerDay}
-            </Card.Text>
+            {/* Type */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Type:</strong>
+              </span>
+              <span>{car?.Models?.Type?.type_name}</span>
+            </div>
 
-            {/* Menampilkan Year */}
-            <Card.Text>
-              <strong>Year:</strong> {car?.year}
-            </Card.Text>
+            {/* Transmission */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Transmission:</strong>
+              </span>
+              <span>{car?.Models?.Transmission?.transmission_name}</span>
+            </div>
 
-            {/* Menampilkan Available At */}
-            <Card.Text>
-              <strong>Available At:</strong>{" "}
-              {new Date(car?.availableAt).toLocaleDateString()}
-            </Card.Text>
+            {/* Year */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Year:</strong>
+              </span>
+              <span>{car?.year}</span>
+            </div>
 
-            {/* Menampilkan Description */}
-            <Card.Text>
-              <strong>Description:</strong> {car?.description}
-            </Card.Text>
+            {/* Capacity */}
+            <div className="d-flex justify-content-between my-2">
+              <span>
+                <strong>Capacity:</strong>
+              </span>
+              <span>{car?.Models?.capacity || "Not specified"}</span>
+            </div>
 
-            {/* Menampilkan Availability */}
-            <Card.Text>
-              <strong>Availability:</strong> {car?.Available?.available_status}
-            </Card.Text>
+            {/* Description */}
+            <div className="my-3">
+              <strong>Description:</strong>
+              <p>{car?.description}</p>
+            </div>
 
-            {/* Menampilkan car Options */}
-            <Card.Text>
+            {/* Options */}
+            <div className="my-3">
               <h6>Options:</h6>
-              {car?.Models?.modelOptions &&
-              car.Models.modelOptions.length > 0 ? (
+              {car?.Models?.modelOptions?.length > 0 ? (
                 <ul>
                   {car.Models.modelOptions.map((option, index) => (
                     <li key={index}>{option?.Options?.option_name}</li>
@@ -162,12 +187,12 @@ function CarDetail() {
               ) : (
                 <span>No options available</span>
               )}
-            </Card.Text>
+            </div>
 
-            {/* Menampilkan car Specs */}
-            <Card.Text>
+            {/* Specifications */}
+            <div className="my-3">
               <h6>Specifications:</h6>
-              {car?.Models?.modelSpecs && car.Models.modelSpecs.length > 0 ? (
+              {car?.Models?.modelSpecs?.length > 0 ? (
                 <ul>
                   {car.Models.modelSpecs.map((spec, index) => (
                     <li key={index}>{spec?.Specs?.spec_name}</li>
@@ -176,34 +201,25 @@ function CarDetail() {
               ) : (
                 <span>No specs available</span>
               )}
-            </Card.Text>
+            </div>
 
-            {/* Tombol untuk Edit */}
-            <Card.Text>
-              <div className="d-grid gap-2">
-                <Button
-                  as={Link}
-                  href={`/cars/edit/${id}`}
-                  variant="primary"
-                  size="md"
-                >
-                  Edit car
-                </Button>
-              </div>
-            </Card.Text>
-
-            {/* Tombol untuk Delete */}
-            <Card.Text>
-              <div className="d-grid gap-2">
-                <Button onClick={onDelete} variant="danger" size="md">
-                  Delete car
-                </Button>
-              </div>
-            </Card.Text>
+            {/* Buttons */}
+            <div className="d-grid gap-2 mt-4">
+              <Button
+                as={Link}
+                href={`/cars/edit/${car?.id}`}
+                variant="primary"
+                size="md"
+              >
+                Edit Car
+              </Button>
+              <Button onClick={onDelete} variant="danger" size="md">
+                Delete Car
+              </Button>
+            </div>
           </Card.Body>
         </Card>
       </Col>
-      <Col md={3}></Col>
     </Row>
   );
 }
