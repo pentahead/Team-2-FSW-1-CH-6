@@ -56,7 +56,7 @@ function Login() {
   };
 
   return (
-    <section className="d-flex z-n1 bg-light  justify-content-center align-items-center vh-100 bg-login position-relative overflow-hidden">
+    <section className="d-flex z-1 bg-light  justify-content-center align-items-center vh-100 bg-login position-relative overflow-hidden">
       <Container>
         <Row className="justify-content-center position-relative">
           <Col
@@ -79,7 +79,7 @@ function Login() {
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
-                  value={"email"}
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
