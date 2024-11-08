@@ -106,7 +106,7 @@ const ResultSection = () => {
   );
 };
 
-function Cars() {
+function FindCars() {
   return (
     <>
       <GuestLayout>
