@@ -3,33 +3,32 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import { getCars } from "../../service/cars";
-import CarItem from "../../components/Car/CarItem";
+import { getOption } from "../../service/option";
+import OptionItem from "../../components/Option/OptionItem";
 
-export const Route = createLazyFileRoute("/cars/")({
-  component: CarIndex,
+export const Route = createLazyFileRoute("/options/")({
+  component: Option,
 });
 
-function CarIndex() {
+function Option() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [Cars, setCars] = useState([]);
+  const [Options, setOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const getCarData = async () => {
+    const getOptionData = async () => {
       setIsLoading(true);
-      const result = await getCars();
+      const result = await getOption();
       if (result.success) {
-        setCars(result.data);
+        setOptions(result.data);
       }
       setIsLoading(false);
     };
 
     if (token) {
-      getCarData();
+      getOptionData();
     }
   }, [token]);
 
@@ -37,7 +36,9 @@ function CarIndex() {
     return (
       <Row className="mt-4">
         <Col>
-          <h1 className="text-center">Please login first to get Car data!</h1>
+          <h1 className="text-center">
+            Please login first to get Option data!
+          </h1>
         </Col>
       </Row>
     );
@@ -53,22 +54,25 @@ function CarIndex() {
 
   return (
     <>
+      {/* Add a button to redirect to /specs/create */}
       <Row className="mt-4">
         <Col>
           <button
-            onClick={() => navigate({ to: "/cars/create" })}
+            onClick={() => navigate({ to: "/options/create" })}
             className="btn btn-primary"
           >
-            Add New Car
+            Add New Option
           </button>
         </Col>
       </Row>
 
       <Row className="mt-4">
-        {Cars.length === 0 ? (
-          <h1>Cars is not found!</h1>
+        {Options.length === 0 ? (
+          <h1>Options not found!</h1>
         ) : (
-          Cars.map((car) => <CarItem car={car} key={car?.id} />)
+          Options.map((option) => (
+            <OptionItem option={option} key={option?.id} />
+          ))
         )}
       </Row>
     </>
