@@ -22,7 +22,6 @@ const LoginLazyImport = createFileRoute('/login')()
 const FindcarsLazyImport = createFileRoute('/findcars')()
 const DashbordLazyImport = createFileRoute('/dashbord')()
 const DashboardLazyImport = createFileRoute('/dashboard')()
-const CarsLazyImport = createFileRoute('/cars')()
 const IndexLazyImport = createFileRoute('/')()
 const SpecsIndexLazyImport = createFileRoute('/specs/')()
 const OptionsIndexLazyImport = createFileRoute('/options/')()
@@ -79,12 +78,6 @@ const DashboardLazyRoute = DashboardLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
 
-const CarsLazyRoute = CarsLazyImport.update({
-  id: '/cars',
-  path: '/cars',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/cars.lazy').then((d) => d.Route))
-
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -110,9 +103,9 @@ const ModelsIndexLazyRoute = ModelsIndexLazyImport.update({
 } as any).lazy(() => import('./routes/models/index.lazy').then((d) => d.Route))
 
 const CarsIndexLazyRoute = CarsIndexLazyImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CarsLazyRoute,
+  id: '/cars/',
+  path: '/cars/',
+  getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/cars/index.lazy').then((d) => d.Route))
 
 const SpecsCreateLazyRoute = SpecsCreateLazyImport.update({
@@ -204,13 +197,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/cars': {
-      id: '/cars'
-      path: '/cars'
-      fullPath: '/cars'
-      preLoaderRoute: typeof CarsLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -313,10 +299,10 @@ declare module '@tanstack/react-router' {
     }
     '/cars/': {
       id: '/cars/'
-      path: '/'
-      fullPath: '/cars/'
+      path: '/cars'
+      fullPath: '/cars'
       preLoaderRoute: typeof CarsIndexLazyImport
-      parentRoute: typeof CarsLazyImport
+      parentRoute: typeof rootRoute
     }
     '/models/': {
       id: '/models/'
@@ -372,21 +358,8 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface CarsLazyRouteChildren {
-  CarsIndexLazyRoute: typeof CarsIndexLazyRoute
-}
-
-const CarsLazyRouteChildren: CarsLazyRouteChildren = {
-  CarsIndexLazyRoute: CarsIndexLazyRoute,
-}
-
-const CarsLazyRouteWithChildren = CarsLazyRoute._addFileChildren(
-  CarsLazyRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/cars': typeof CarsLazyRouteWithChildren
   '/dashboard': typeof DashboardLazyRoute
   '/dashbord': typeof DashbordLazyRoute
   '/findcars': typeof FindcarsLazyRoute
@@ -401,7 +374,7 @@ export interface FileRoutesByFullPath {
   '/options/create': typeof OptionsCreateLazyRoute
   '/specs/$id': typeof SpecsIdLazyRoute
   '/specs/create': typeof SpecsCreateLazyRoute
-  '/cars/': typeof CarsIndexLazyRoute
+  '/cars': typeof CarsIndexLazyRoute
   '/models': typeof ModelsIndexLazyRoute
   '/options': typeof OptionsIndexLazyRoute
   '/specs': typeof SpecsIndexLazyRoute
@@ -440,7 +413,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/cars': typeof CarsLazyRouteWithChildren
   '/dashboard': typeof DashboardLazyRoute
   '/dashbord': typeof DashbordLazyRoute
   '/findcars': typeof FindcarsLazyRoute
@@ -469,7 +441,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/cars'
     | '/dashboard'
     | '/dashbord'
     | '/findcars'
@@ -484,7 +455,7 @@ export interface FileRouteTypes {
     | '/options/create'
     | '/specs/$id'
     | '/specs/create'
-    | '/cars/'
+    | '/cars'
     | '/models'
     | '/options'
     | '/specs'
@@ -520,7 +491,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/cars'
     | '/dashboard'
     | '/dashbord'
     | '/findcars'
@@ -548,7 +518,6 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  CarsLazyRoute: typeof CarsLazyRouteWithChildren
   DashboardLazyRoute: typeof DashboardLazyRoute
   DashbordLazyRoute: typeof DashbordLazyRoute
   FindcarsLazyRoute: typeof FindcarsLazyRoute
@@ -575,7 +544,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  CarsLazyRoute: CarsLazyRouteWithChildren,
   DashboardLazyRoute: DashboardLazyRoute,
   DashbordLazyRoute: DashbordLazyRoute,
   FindcarsLazyRoute: FindcarsLazyRoute,
@@ -611,7 +579,6 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/cars",
         "/dashboard",
         "/dashbord",
         "/findcars",
@@ -638,12 +605,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.jsx"
-    },
-    "/cars": {
-      "filePath": "cars.lazy.jsx",
-      "children": [
-        "/cars/"
-      ]
     },
     "/dashboard": {
       "filePath": "dashboard.lazy.jsx"
@@ -688,8 +649,7 @@ export const routeTree = rootRoute
       "filePath": "specs/create.lazy.jsx"
     },
     "/cars/": {
-      "filePath": "cars/index.lazy.jsx",
-      "parent": "/cars"
+      "filePath": "cars/index.lazy.jsx"
     },
     "/models/": {
       "filePath": "models/index.lazy.jsx"
