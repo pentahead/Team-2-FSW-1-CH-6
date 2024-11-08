@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import { getModels } from "../../../service/models";
 import { getAvailables } from "../../../service/availables";
-import { getDetailCar, createCar, updateCar } from "../../../service/cars"; // Pastikan ada fungsi getDetailCar
+import { getDetailCar, updateCar } from "../../../service/cars"; 
 import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/cars/edit/$id")({
@@ -36,6 +36,7 @@ function EditCar() {
   const [models, setModels] = useState([]);
   const [availableStatuses, setAvailableStatuses] = useState([]);
 
+  // Fetch models and available statuses
   useEffect(() => {
     const fetchData = async () => {
       const modelResult = await getModels();
@@ -48,19 +49,21 @@ function EditCar() {
     fetchData();
   }, []);
 
+  // Fetch car detail for editing
   useEffect(() => {
     const getDetailCarData = async (id) => {
       setIsLoading(true);
       const result = await getDetailCar(id);
       if (result?.success) {
-        setPlate(result.data.plate);
-        setRentPerDay(result.data.rentPerDay);
-        setDescription(result.data.description);
-        setAvailableAt(result.data.availableAt);
-        setYear(result.data.year);
-        setAvailableStatus(result.data.availableStatus);
-        setModelId(result.data.modelId || ""); // Set modelId correctly
-        setImage(result.data.image);
+        const carData = result.data;
+        setPlate(carData.plate);
+        setRentPerDay(carData.rentPerDay);
+        setDescription(carData.description);
+        setAvailableAt(carData.availableAt);
+        setYear(carData.year);
+        setAvailableStatus(carData.availableStatus);
+        setModelId(carData.modelId || ""); // Set modelId correctly
+        setImage(carData.image);
         setIsNotFound(false);
       } else {
         setIsNotFound(true);
@@ -78,10 +81,9 @@ function EditCar() {
     return null;
   }
 
+  // Handle form submission
   const onSubmit = async (event) => {
     event.preventDefault();
-
-    
 
     const rentPerDayNum = parseInt(rentPerDay, 10);
     const yearNum = parseInt(year, 10);
@@ -105,6 +107,11 @@ function EditCar() {
       alert(result?.message);
     }
   };
+
+  // Jangan render form jika data belum dimuat
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Row className="mt-5">

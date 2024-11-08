@@ -26,11 +26,16 @@ function EditOption() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getDetailOptionData = async (id) => {
+    if (!id) {
+      setIsNotFound(true);
+      return;
+    }
+
+    const getDetailOptionData = async () => {
       setIsLoading(true);
       const result = await getDetailOption(id);
       if (result?.success) {
-        setOptionName(result.data?.optionName);
+        setOptionName(result.data?.option_name || "");
         setIsNotFound(false);
       } else {
         setIsNotFound(true);
@@ -38,14 +43,16 @@ function EditOption() {
       setIsLoading(false);
     };
 
-    if (id) {
-      getDetailOptionData(id);
-    }
+    getDetailOptionData();
   }, [id]);
 
   if (isNotFound) {
     navigate({ to: "/options" });
-    return;
+    return null;
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   const onSubmit = async (event) => {
@@ -57,10 +64,9 @@ function EditOption() {
     const result = await updateOption(id, request);
     if (result?.success) {
       navigate({ to: `/options/${id}` });
-      return;
+    } else {
+      alert(result?.message || "Terjadi kesalahan.");
     }
-
-    alert(result?.message);
   };
 
   return (
