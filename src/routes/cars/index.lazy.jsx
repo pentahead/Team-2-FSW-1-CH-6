@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { getCars } from "../../service/cars";
-import CarItem from "../../components/Car/CarItem";
+import CarItem from "../../components/Car";
 
 export const Route = createLazyFileRoute("/cars/")({
   component: CarIndex,
@@ -52,7 +52,7 @@ function CarIndex() {
 
   return (
     <>
-      <Row className="mt-4">
+      {/* <Row className="mt-4">
         <Col>
           <button
             onClick={() => navigate({ to: "/cars/create" })}
@@ -61,7 +61,7 @@ function CarIndex() {
             Add New Car
           </button>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row className="mt-4">
         {Cars.length === 0 ? (
