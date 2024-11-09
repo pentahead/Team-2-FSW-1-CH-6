@@ -23,10 +23,13 @@ const FindcarsLazyImport = createFileRoute('/findcars')()
 const DashbordLazyImport = createFileRoute('/dashbord')()
 const DashboardLazyImport = createFileRoute('/dashboard')()
 const IndexLazyImport = createFileRoute('/')()
+const TransmissionsIndexLazyImport = createFileRoute('/transmissions/')()
 const SpecsIndexLazyImport = createFileRoute('/specs/')()
 const OptionsIndexLazyImport = createFileRoute('/options/')()
 const ModelsIndexLazyImport = createFileRoute('/models/')()
 const CarsIndexLazyImport = createFileRoute('/cars/')()
+const TransmissionsCreateLazyImport = createFileRoute('/transmissions/create')()
+const TransmissionsIdLazyImport = createFileRoute('/transmissions/$id')()
 const SpecsCreateLazyImport = createFileRoute('/specs/create')()
 const SpecsIdLazyImport = createFileRoute('/specs/$id')()
 const OptionsCreateLazyImport = createFileRoute('/options/create')()
@@ -35,6 +38,9 @@ const ModelsCreateLazyImport = createFileRoute('/models/create')()
 const ModelsIdLazyImport = createFileRoute('/models/$id')()
 const CarsCreateLazyImport = createFileRoute('/cars/create')()
 const CarsIdLazyImport = createFileRoute('/cars/$id')()
+const TransmissionsEditIdLazyImport = createFileRoute(
+  '/transmissions/edit/$id',
+)()
 const SpecsEditIdLazyImport = createFileRoute('/specs/edit/$id')()
 const OptionsEditIdLazyImport = createFileRoute('/options/edit/$id')()
 const ModelsEditIdLazyImport = createFileRoute('/models/edit/$id')()
@@ -84,6 +90,14 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const TransmissionsIndexLazyRoute = TransmissionsIndexLazyImport.update({
+  id: '/transmissions/',
+  path: '/transmissions/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/index.lazy').then((d) => d.Route),
+)
+
 const SpecsIndexLazyRoute = SpecsIndexLazyImport.update({
   id: '/specs/',
   path: '/specs/',
@@ -107,6 +121,22 @@ const CarsIndexLazyRoute = CarsIndexLazyImport.update({
   path: '/cars/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/cars/index.lazy').then((d) => d.Route))
+
+const TransmissionsCreateLazyRoute = TransmissionsCreateLazyImport.update({
+  id: '/transmissions/create',
+  path: '/transmissions/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/create.lazy').then((d) => d.Route),
+)
+
+const TransmissionsIdLazyRoute = TransmissionsIdLazyImport.update({
+  id: '/transmissions/$id',
+  path: '/transmissions/$id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/$id.lazy').then((d) => d.Route),
+)
 
 const SpecsCreateLazyRoute = SpecsCreateLazyImport.update({
   id: '/specs/create',
@@ -157,6 +187,14 @@ const CarsIdLazyRoute = CarsIdLazyImport.update({
   path: '/cars/$id',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/cars/$id.lazy').then((d) => d.Route))
+
+const TransmissionsEditIdLazyRoute = TransmissionsEditIdLazyImport.update({
+  id: '/transmissions/edit/$id',
+  path: '/transmissions/edit/$id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/edit/$id.lazy').then((d) => d.Route),
+)
 
 const SpecsEditIdLazyRoute = SpecsEditIdLazyImport.update({
   id: '/specs/edit/$id',
@@ -297,6 +335,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpecsCreateLazyImport
       parentRoute: typeof rootRoute
     }
+    '/transmissions/$id': {
+      id: '/transmissions/$id'
+      path: '/transmissions/$id'
+      fullPath: '/transmissions/$id'
+      preLoaderRoute: typeof TransmissionsIdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/transmissions/create': {
+      id: '/transmissions/create'
+      path: '/transmissions/create'
+      fullPath: '/transmissions/create'
+      preLoaderRoute: typeof TransmissionsCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/cars/': {
       id: '/cars/'
       path: '/cars'
@@ -323,6 +375,13 @@ declare module '@tanstack/react-router' {
       path: '/specs'
       fullPath: '/specs'
       preLoaderRoute: typeof SpecsIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/transmissions/': {
+      id: '/transmissions/'
+      path: '/transmissions'
+      fullPath: '/transmissions'
+      preLoaderRoute: typeof TransmissionsIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/cars/edit/$id': {
@@ -353,6 +412,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpecsEditIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/transmissions/edit/$id': {
+      id: '/transmissions/edit/$id'
+      path: '/transmissions/edit/$id'
+      fullPath: '/transmissions/edit/$id'
+      preLoaderRoute: typeof TransmissionsEditIdLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -374,14 +440,18 @@ export interface FileRoutesByFullPath {
   '/options/create': typeof OptionsCreateLazyRoute
   '/specs/$id': typeof SpecsIdLazyRoute
   '/specs/create': typeof SpecsCreateLazyRoute
+  '/transmissions/$id': typeof TransmissionsIdLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
   '/cars': typeof CarsIndexLazyRoute
   '/models': typeof ModelsIndexLazyRoute
   '/options': typeof OptionsIndexLazyRoute
   '/specs': typeof SpecsIndexLazyRoute
+  '/transmissions': typeof TransmissionsIndexLazyRoute
   '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/models/edit/$id': typeof ModelsEditIdLazyRoute
   '/options/edit/$id': typeof OptionsEditIdLazyRoute
   '/specs/edit/$id': typeof SpecsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -400,14 +470,18 @@ export interface FileRoutesByTo {
   '/options/create': typeof OptionsCreateLazyRoute
   '/specs/$id': typeof SpecsIdLazyRoute
   '/specs/create': typeof SpecsCreateLazyRoute
+  '/transmissions/$id': typeof TransmissionsIdLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
   '/cars': typeof CarsIndexLazyRoute
   '/models': typeof ModelsIndexLazyRoute
   '/options': typeof OptionsIndexLazyRoute
   '/specs': typeof SpecsIndexLazyRoute
+  '/transmissions': typeof TransmissionsIndexLazyRoute
   '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/models/edit/$id': typeof ModelsEditIdLazyRoute
   '/options/edit/$id': typeof OptionsEditIdLazyRoute
   '/specs/edit/$id': typeof SpecsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRoutesById {
@@ -427,14 +501,18 @@ export interface FileRoutesById {
   '/options/create': typeof OptionsCreateLazyRoute
   '/specs/$id': typeof SpecsIdLazyRoute
   '/specs/create': typeof SpecsCreateLazyRoute
+  '/transmissions/$id': typeof TransmissionsIdLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
   '/cars/': typeof CarsIndexLazyRoute
   '/models/': typeof ModelsIndexLazyRoute
   '/options/': typeof OptionsIndexLazyRoute
   '/specs/': typeof SpecsIndexLazyRoute
+  '/transmissions/': typeof TransmissionsIndexLazyRoute
   '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/models/edit/$id': typeof ModelsEditIdLazyRoute
   '/options/edit/$id': typeof OptionsEditIdLazyRoute
   '/specs/edit/$id': typeof SpecsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -455,14 +533,18 @@ export interface FileRouteTypes {
     | '/options/create'
     | '/specs/$id'
     | '/specs/create'
+    | '/transmissions/$id'
+    | '/transmissions/create'
     | '/cars'
     | '/models'
     | '/options'
     | '/specs'
+    | '/transmissions'
     | '/cars/edit/$id'
     | '/models/edit/$id'
     | '/options/edit/$id'
     | '/specs/edit/$id'
+    | '/transmissions/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -480,14 +562,18 @@ export interface FileRouteTypes {
     | '/options/create'
     | '/specs/$id'
     | '/specs/create'
+    | '/transmissions/$id'
+    | '/transmissions/create'
     | '/cars'
     | '/models'
     | '/options'
     | '/specs'
+    | '/transmissions'
     | '/cars/edit/$id'
     | '/models/edit/$id'
     | '/options/edit/$id'
     | '/specs/edit/$id'
+    | '/transmissions/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -505,14 +591,18 @@ export interface FileRouteTypes {
     | '/options/create'
     | '/specs/$id'
     | '/specs/create'
+    | '/transmissions/$id'
+    | '/transmissions/create'
     | '/cars/'
     | '/models/'
     | '/options/'
     | '/specs/'
+    | '/transmissions/'
     | '/cars/edit/$id'
     | '/models/edit/$id'
     | '/options/edit/$id'
     | '/specs/edit/$id'
+    | '/transmissions/edit/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -532,14 +622,18 @@ export interface RootRouteChildren {
   OptionsCreateLazyRoute: typeof OptionsCreateLazyRoute
   SpecsIdLazyRoute: typeof SpecsIdLazyRoute
   SpecsCreateLazyRoute: typeof SpecsCreateLazyRoute
+  TransmissionsIdLazyRoute: typeof TransmissionsIdLazyRoute
+  TransmissionsCreateLazyRoute: typeof TransmissionsCreateLazyRoute
   CarsIndexLazyRoute: typeof CarsIndexLazyRoute
   ModelsIndexLazyRoute: typeof ModelsIndexLazyRoute
   OptionsIndexLazyRoute: typeof OptionsIndexLazyRoute
   SpecsIndexLazyRoute: typeof SpecsIndexLazyRoute
+  TransmissionsIndexLazyRoute: typeof TransmissionsIndexLazyRoute
   CarsEditIdLazyRoute: typeof CarsEditIdLazyRoute
   ModelsEditIdLazyRoute: typeof ModelsEditIdLazyRoute
   OptionsEditIdLazyRoute: typeof OptionsEditIdLazyRoute
   SpecsEditIdLazyRoute: typeof SpecsEditIdLazyRoute
+  TransmissionsEditIdLazyRoute: typeof TransmissionsEditIdLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -558,14 +652,18 @@ const rootRouteChildren: RootRouteChildren = {
   OptionsCreateLazyRoute: OptionsCreateLazyRoute,
   SpecsIdLazyRoute: SpecsIdLazyRoute,
   SpecsCreateLazyRoute: SpecsCreateLazyRoute,
+  TransmissionsIdLazyRoute: TransmissionsIdLazyRoute,
+  TransmissionsCreateLazyRoute: TransmissionsCreateLazyRoute,
   CarsIndexLazyRoute: CarsIndexLazyRoute,
   ModelsIndexLazyRoute: ModelsIndexLazyRoute,
   OptionsIndexLazyRoute: OptionsIndexLazyRoute,
   SpecsIndexLazyRoute: SpecsIndexLazyRoute,
+  TransmissionsIndexLazyRoute: TransmissionsIndexLazyRoute,
   CarsEditIdLazyRoute: CarsEditIdLazyRoute,
   ModelsEditIdLazyRoute: ModelsEditIdLazyRoute,
   OptionsEditIdLazyRoute: OptionsEditIdLazyRoute,
   SpecsEditIdLazyRoute: SpecsEditIdLazyRoute,
+  TransmissionsEditIdLazyRoute: TransmissionsEditIdLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -593,14 +691,18 @@ export const routeTree = rootRoute
         "/options/create",
         "/specs/$id",
         "/specs/create",
+        "/transmissions/$id",
+        "/transmissions/create",
         "/cars/",
         "/models/",
         "/options/",
         "/specs/",
+        "/transmissions/",
         "/cars/edit/$id",
         "/models/edit/$id",
         "/options/edit/$id",
-        "/specs/edit/$id"
+        "/specs/edit/$id",
+        "/transmissions/edit/$id"
       ]
     },
     "/": {
@@ -648,6 +750,12 @@ export const routeTree = rootRoute
     "/specs/create": {
       "filePath": "specs/create.lazy.jsx"
     },
+    "/transmissions/$id": {
+      "filePath": "transmissions/$id.lazy.jsx"
+    },
+    "/transmissions/create": {
+      "filePath": "transmissions/create.lazy.jsx"
+    },
     "/cars/": {
       "filePath": "cars/index.lazy.jsx"
     },
@@ -660,6 +768,9 @@ export const routeTree = rootRoute
     "/specs/": {
       "filePath": "specs/index.lazy.jsx"
     },
+    "/transmissions/": {
+      "filePath": "transmissions/index.lazy.jsx"
+    },
     "/cars/edit/$id": {
       "filePath": "cars/edit/$id.lazy.jsx"
     },
@@ -671,6 +782,9 @@ export const routeTree = rootRoute
     },
     "/specs/edit/$id": {
       "filePath": "specs/edit/$id.lazy.jsx"
+    },
+    "/transmissions/edit/$id": {
+      "filePath": "transmissions/edit/$id.lazy.jsx"
     }
   }
 }
