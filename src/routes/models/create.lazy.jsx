@@ -147,7 +147,7 @@ function CreateModel() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="Capacity"
                     required
                     value={capacity}

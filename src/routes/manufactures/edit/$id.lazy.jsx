@@ -131,7 +131,7 @@ function EditManufacture() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="Year"
                     required
                     value={year}

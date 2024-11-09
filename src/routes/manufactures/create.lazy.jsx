@@ -73,7 +73,7 @@ function CreateManufacture() {
                 controlId="manufacture_region"
               >
                 <Form.Label column sm={3}>
-                Manufacture region
+                  Manufacture region
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
@@ -93,7 +93,7 @@ function CreateManufacture() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="Year"
                     required
                     value={year}

@@ -27,7 +27,7 @@ function Login() {
     // Redirect based on role_id if token and user exist
     if (token && user) {
       if (user.role_id === 1) {
-        navigate({ to: "/dashbord" });
+        navigate({ to: "/dashboard" });
       } else if (user.role_id === 2) {
         navigate({ to: "/" });
       }

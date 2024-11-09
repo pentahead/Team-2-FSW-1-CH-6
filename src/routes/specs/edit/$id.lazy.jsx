@@ -21,7 +21,7 @@ function EditSpec() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  const [specName, setSpecName] = useState("");
+  const [spec_name, setSpecName] = useState("");
   const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,7 +30,7 @@ function EditSpec() {
       setIsLoading(true);
       const result = await getDetailSpec(id);
       if (result?.success) {
-        setSpecName(result.data?.specName);
+        setSpecName(result.data?.spec_name);
         setIsNotFound(false);
       } else {
         setIsNotFound(true);
@@ -52,7 +52,7 @@ function EditSpec() {
     event.preventDefault();
 
     const request = {
-      specName,
+      spec_name,
     };
     const result = await updateSpec(id, request);
     if (result?.success) {
@@ -79,7 +79,7 @@ function EditSpec() {
                     type="text"
                     placeholder="Spec Name"
                     required
-                    value={specName}
+                    value={spec_name}
                     onChange={(event) => {
                       setSpecName(event.target.value);
                     }}
