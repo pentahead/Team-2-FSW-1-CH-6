@@ -4,7 +4,7 @@ import { createCar, getDetailCar, updateCar } from "../../service/cars";
 import { getModels } from "../../service/models";
 import { getAvailables } from "../../service/availables";
 
-const FormComponent = ({ setOpenForm, id, setId }) => {
+const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
   const [plate, setPlate] = useState("");
   const [rentPerDay, setRentPerDay] = useState("");
   const [description, setDescription] = useState("");
@@ -78,6 +78,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
     if (result?.success) {
       setOpenForm(false);
       setId(null);
+      getCarData();
     } else {
       alert(result?.message);
     }
@@ -273,11 +274,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
                   </Col>
                 </Form.Group>
                 <div className="d-flex justify-content-start gap-1 flex-row">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    onClick={() => alert(id ? "Editing Car" : "Creating Car")}
-                  >
+                  <Button type="submit" variant="primary">
                     {id ? "Edit Car" : "Create Car"}
                   </Button>
 

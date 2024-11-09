@@ -33,8 +33,11 @@ function NavbarLocal() {
   const { user, token } = useSelector((state) => state.auth);
   return (
     <>
-      <Navbar expand="lg" className="bg-white px-0 shadow-sm">
-        <Container fluid className="d-flex flex-row justify-content-end  gap-2">
+      <Navbar expand="lg" className="bg-whiteshadow-sm">
+        <Container
+          fluid
+          className="d-flex flex-row justify-content-end  gap-2  "
+        >
           <Form className="d-flex">
             <Form.Control
               type="search"
@@ -58,7 +61,7 @@ function NavbarLocal() {
                 }}
               />
             </Nav.Link>
-            <Dropdown as={ButtonGroup} className="border-0">
+            <Dropdown as={ButtonGroup} className="border-0 me-5">
               <Button className="bg-white px-4 text-black border-0">
                 {user?.name}
               </Button>
