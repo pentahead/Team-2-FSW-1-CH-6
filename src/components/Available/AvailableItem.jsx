@@ -9,7 +9,9 @@ const AvailableItem = ({ available }) => {
     <Col md={3}>
       <Card style={{ width: "18rem", height: "9rem", marginTop: "2rem" }}>
         <Card.Body className="d-flex flex-column justify-content-between">
-          <Card.Title>{available?.available_status}</Card.Title>
+          <Card.Title className="text-center">
+            {available?.available_status}
+          </Card.Title>
           <Button
             style={{ width: "12rem" }}
             as={Link}

@@ -12,37 +12,37 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
-  createAvailable,
-  updateAvailable,
-  getAvailables,
-  getDetailAvailable,
-  deleteAvailable,
-} from "../../service/availables";
+  getOption,
+  getDetailOption,
+  createOption,
+  updateOption,
+  deleteOption,
+} from "../../service/option";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 
-const ScreenAvailables = () => {
+const ScreenOptions = () => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [availables, setAvailabels] = useState([]);
+  const [options, setOption] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [id, setId] = useState(null);
 
-  const getAvailableData = async () => {
+  const getOptionData = async () => {
     setIsLoading(true);
-    const result = await getAvailables();
+    const result = await getOption();
     if (result.success) {
-      setAvailabels(result.data);
+      setOption(result.data);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (token) {
-      getAvailableData();
+      getOptionData();
     }
   }, [token]);
 
@@ -51,7 +51,7 @@ const ScreenAvailables = () => {
       <Row className="mt-4">
         <Col>
           <h1 className="text-center">
-            Please login first to get Available data!
+            Please login first to get Option data!
           </h1>
         </Col>
       </Row>
@@ -79,10 +79,10 @@ const ScreenAvailables = () => {
         {
           label: "Yes",
           onClick: async () => {
-            const result = await deleteAvailable(id);
+            const result = await deleteOption(id);
             if (result?.success) {
               toast.success("Data deleted successfully");
-              getAvailableData();
+              getOptionData();
               return;
             }
 
@@ -103,8 +103,8 @@ const ScreenAvailables = () => {
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <div>
-              <h3 className="text-primary">Available</h3>
-              <h5 className="text-muted">Manage Available</h5>
+              <h3 className="text-primary">Option</h3>
+              <h5 className="text-muted">Manage Option</h5>
             </div>
           </div>
         </Col>
@@ -112,18 +112,14 @@ const ScreenAvailables = () => {
 
       <Row className="mt-3">
         <Col>
-          <CreateAvailable
-            onAvailableCreated={getAvailableData}
-            id={id}
-            setId={setId}
-          />
+          <CreateOption onOptionCreated={getOptionData} id={id} setId={setId} />
         </Col>
         <Col xs={6}>
           <ListGroup as="ul">
-            {availables.length === 0 ? (
-              <h1>Available not found!</h1>
+            {options.length === 0 ? (
+              <h1>Options not found!</h1>
             ) : (
-              availables.map((availables, index) => (
+              options.map((options, index) => (
                 <ListGroup.Item
                   as="li"
                   key={index}
@@ -136,7 +132,7 @@ const ScreenAvailables = () => {
                     <Col>
                       <h6 className="mb-0 text-dark">
                         {" "}
-                        {availables?.available_status}
+                        {options?.option_name}
                       </h6>
                     </Col>
                     <Col>
@@ -145,12 +141,12 @@ const ScreenAvailables = () => {
                           as={Link}
                           variant="primary"
                           size="md"
-                          onClick={() => setId(availables.id)}
+                          onClick={() => setId(options.id)}
                         >
                           Edit
                         </Button>
                         <Button
-                          onClick={(event) => onDelete(event, availables.id)}
+                          onClick={(event) => onDelete(event, options.id)}
                           variant="danger"
                           size="md"
                         >
@@ -169,8 +165,8 @@ const ScreenAvailables = () => {
   );
 };
 
-function CreateAvailable({ onAvailableCreated, id, setId }) {
-  const [availableStatus, setAvailableName] = useState("");
+function CreateOption({ onOptionCreated, id, setId }) {
+  const [optionName, setOptionName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (event) => {
@@ -178,19 +174,19 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
     setIsLoading(true); // Set loading to true when the form is being submitted
 
     const request = {
-      availableStatus,
+      optionName,
     };
 
     const result = id
-      ? await updateAvailable(id, request)
-      : await createAvailable(request);
+      ? await updateOption(id, request)
+      : await createOption(request);
 
     setIsLoading(false); // Set loading to false after the request is complete
 
     if (result?.success) {
       toast.success("Data created successfully");
-      onAvailableCreated();
-      setAvailableName("");
+      onOptionCreated();
+      setOptionName("");
       setId(null);
       return;
     } else {
@@ -201,23 +197,23 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
   };
 
   useEffect(() => {
-    const fetchAvailableDetail = async () => {
+    const fetchOptionDetail = async () => {
       if (id) {
         setIsLoading(true); // Set loading to true when fetching data
-        const result = await getDetailAvailable(id);
+        const result = await getDetailOption(id);
         setIsLoading(false); // Set loading to false after fetching is done
         if (result?.success) {
-          setAvailableName(result.data.available_status);
+          setOptionName(result.data.option_name);
         }
       }
     };
 
-    fetchAvailableDetail();
+    fetchOptionDetail();
   }, [id]);
 
   return (
     <Card>
-      <Card.Header className="text-center">Create Available</Card.Header>
+      <Card.Header className="text-center">Create Option</Card.Header>
       <Card.Body>
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center">
@@ -225,7 +221,7 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
           </div>
         ) : (
           <Form onSubmit={onSubmit}>
-            <Form.Group as={Row} className="mb-3" controlId="available_name">
+            <Form.Group as={Row} className="mb-3" controlId="option_name">
               <Form.Label column sm={3}>
                 Name
               </Form.Label>
@@ -234,8 +230,8 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
                   type="text"
                   placeholder="Name"
                   required
-                  value={availableStatus}
-                  onChange={(event) => setAvailableName(event.target.value)}
+                  value={optionName}
+                  onChange={(event) => setOptionName(event.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -247,8 +243,8 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
                     ? "Updating..."
                     : "Creating..."
                   : id
-                    ? "Update Available"
-                    : "Create Available"}
+                    ? "Update Option"
+                    : "Create Option"}
               </Button>
             </div>
           </Form>
@@ -258,4 +254,4 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
   );
 }
 
-export default ScreenAvailables;
+export default ScreenOptions;

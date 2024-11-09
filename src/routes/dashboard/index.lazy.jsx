@@ -8,6 +8,8 @@ import ScreenManufactures from "../../components/Dashboard/ScreenManufactures";
 import ScreenTransmission from "../../components/Dashboard/ScreenTransmission";
 import ScreenType from "../../components/Dashboard/ScreenType";
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
+import ScreenSpecs from "../../components/Dashboard/ScreenSpecs";
+import ScreenOptions from "../../components/Dashboard/ScreenOptions";
 
 export const Route = createLazyFileRoute("/dashboard/")({
   component: () => (
@@ -52,8 +54,8 @@ export default function Dashboard() {
         {openModel && <ScreenModels />}
         {openType && <ScreenType />}
         {openAvailabels && <ScreenAvailables />}
-        {/* {openSpec && <ScreenSpec />} */}
-        {/* {openOptions && <ScreenOptions />}  */}
+        {openSpec && <ScreenSpecs />}
+        {openOptions && <ScreenOptions />}
       </AuthenticatedLayout>
     </>
   );
