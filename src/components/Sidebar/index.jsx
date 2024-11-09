@@ -147,7 +147,7 @@ function Sidebar({
 
   return (
     <>
-      <Container fluid>
+      <Container fluid >
         <Row className="flex-nowrap w-">
           <Col
             xs="auto"
@@ -155,6 +155,7 @@ function Sidebar({
             xl={2}
             className="bg-white shadow-sm px-0 mx-0 "
           >
+            <div className="d-flex flex-column align-items-center align-items-sm-start px-0 pt-0 text-black max-vh-100 m-0 p-0">
             <div className="d-flex flex-column align-items-center align-items-sm-start px-0 pt-0 text-black max-vh-100 m-0 p-0">
               <Nav
                 className="flex-column mb-sm-auto align-items-center align-items-sm- w-100 m-0 p-0 m-0"
@@ -179,25 +180,6 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item
-                  as={Row}
-                  className="w-100"
-                  style={openManufacture ? { background: "#CFD4ED" } : {}}
-                >
-                  <Nav.Link
-                    as={Col}
-                    xs="auto"
-                    md={3}
-                    xl={0}
-                    href="#"
-                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenManufacture)}
-                  >
-                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Manufacturers
-                    </span>
-                  </Nav.Link>
-                </Nav.Item>
 
                 <Nav.Item
                   as={Row}
@@ -218,7 +200,7 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-
+                
                 <Nav.Item
                   as={Row}
                   className="w-100"
@@ -324,6 +306,10 @@ function Sidebar({
             className="m-0 p-0   min-vh-100 "
             style={{ background: "#F4F5F7" }}
           >
+          <Col
+            className="m-0 p-0   min-vh-100 "
+            style={{ background: "#F4F5F7" }}
+          >
             {children}
           </Col>
         </Row>
@@ -362,6 +348,7 @@ export default function IndexSidebar({
             className=" p-0"
             style={{ width: "3rem", background: "#0D28A6" }}
           >
+            <div className="d-flex flex-column  align-items-center align-items-sm-start  text-black   min-vh-100 overflow-hidden  m-0 p-0 mt-3 pt-5 ">
             <div className="d-flex flex-column  align-items-center align-items-sm-start  text-black   min-vh-100 overflow-hidden  m-0 p-0 mt-3 pt-5 ">
               <Nav
                 // variant="pills"
