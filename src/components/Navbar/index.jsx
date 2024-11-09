@@ -71,7 +71,7 @@ const NavigationBar = () => {
           style={{ background: "#f1f3ff" }}
           key={expand}
           expand={expand}
-          className="mb-0"
+          className="mb-0 "
         >
           <Container>
             <Navbar.Brand

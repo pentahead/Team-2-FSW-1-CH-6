@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <>
-      <Sidebar
+      <Sidebar 
         openCars={openCars}
         setOpenCars={setOpenCars}
         openTransmission={openTransmission}
