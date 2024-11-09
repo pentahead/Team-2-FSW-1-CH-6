@@ -44,7 +44,7 @@ export const createTransmission = async (request) => {
   formData.append("transmission_name", request.transmissionName);
 
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/trnasmissions`,
+    `${import.meta.env.VITE_API_URL}/transmissions`,
     {
       headers: {
         authorization: `Bearer ${token}`,
