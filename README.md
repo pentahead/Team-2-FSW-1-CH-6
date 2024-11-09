@@ -5,7 +5,7 @@
 - **Email**: `admin1@gmail.com`
 - **Password**: `admin1`
 
-## Login Admin
+## Login User
 
 - **Email**: `user1@gmail.com`
 - **Password**: `user1`
