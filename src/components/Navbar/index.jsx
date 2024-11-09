@@ -56,7 +56,7 @@ const NavigationBar = () => {
   const handleBrandClick = () => {
     // Check user's role_id and redirect accordingly
     if (user?.role_id === 1) {
-      navigate({ to: "/dashbord" });
+      navigate({ to: "/dashboard" });
     } else if (user?.role_id === 2) {
       navigate({ to: "/" });
     } else {

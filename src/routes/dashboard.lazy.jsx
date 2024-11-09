@@ -17,9 +17,14 @@ import CarItem from "../components/Car";
 import MyVerticallyCenteredModal from "../components/Modals";
 import { getModels } from "../service/models";
 import { getAvailables } from "../service/availables";
+import Protected from "../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/dashboard")({
-  component: Dashboard,
+  component: () => (
+    <Protected roles={[1]}>
+      <Dashboard />
+    </Protected>
+  ),
 });
 
 export default function Dashboard() {
@@ -183,39 +188,21 @@ const FormComponent = ({ setOpenForm, id }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Mengambil model dan status
       const modelResult = await getModels();
       if (modelResult?.success) setModels(modelResult.data);
 
       const statusResult = await getAvailables();
       if (statusResult?.success) setAvailableStatuses(statusResult.data);
-
-      // Jika mode edit aktif, ambil detail data mobil
-      if (isEditMode && id) {
-        const result = await getDetailCar(id);
-        if (result?.success) {
-          setPlate(result.data.plate);
-          setRentPerDay(result.data.rentPerDay);
-          setDescription(result.data.description);
-          setAvailableAt(result.data.availableAt);
-          setYear(result.data.year);
-          setAvailableStatus(result.data.availableStatus);
-          setModelId(result.data.modelId || "");
-          setImage(result.data.image);
-          setCurrentProfilePicture(result.data.image);
-        }
-      }
     };
 
     fetchData();
-  }, [id, isEditMode]);
+  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const rentPerDayNum = parseInt(rentPerDay, 10);
     const yearNum = parseInt(year, 10);
     const modelIdNum = parseInt(modelId, 10);
-
     if (isNaN(rentPerDayNum) || isNaN(yearNum) || isNaN(modelIdNum)) {
       alert("Please provide valid numbers for rentPerDay, year, and modelId.");
       return;
@@ -232,11 +219,9 @@ const FormComponent = ({ setOpenForm, id }) => {
       image,
     };
 
-    const result = isEditMode
-      ? await updateCar(id, request)
-      : await createCar(request);
+    const result = await createCar(request);
     if (result?.success) {
-      navigate("/cars");
+      navigate({ to: "/cars" });
     } else {
       alert(result?.message);
     }
@@ -246,10 +231,7 @@ const FormComponent = ({ setOpenForm, id }) => {
     <Row className="mt-5 bg-white border-2">
       <Col className="offset-md-12">
         <Container fluid className=" p-5">
-          {/* <Card.Header className="text-center">Create Car</Card.Header> */}
-          {/* <Card.Body> */}
           <Form onSubmit={onSubmit} as={Container}>
-            {/* Input fields for plate, rentPerDay, description, year, availableStatus, modelId */}
             <Row className="gap-5">
               <Col xs={4}>
                 <Form.Group as={Row} className="mb-3" controlId="image">
@@ -439,9 +421,9 @@ const FormComponent = ({ setOpenForm, id }) => {
                     Create Car
                   </Button>
                   <Button
-                    type="submit"
-                    variant="danger"
                     onClick={() => setOpenForm(false)}
+                    // type="submit"
+                    variant="danger"
                   >
                     Cancel
                   </Button>
@@ -449,7 +431,6 @@ const FormComponent = ({ setOpenForm, id }) => {
               </Col>
             </Row>
           </Form>
-          {/* </Card.Body> */}
         </Container>
       </Col>
     </Row>
