@@ -4,22 +4,20 @@ import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import { Link } from "@tanstack/react-router";
 
-const TransmissionItem = ({ transmission }) => {
+const TypeItem = ({ type }) => {
   return (
     <Col md={3}>
       <Card style={{ width: "18rem", height: "9rem", marginTop: "2rem" }}>
         <Card.Body className="d-flex flex-column justify-content-between">
-          <Card.Title className="text-center">
-            {transmission?.transmission_name}
-          </Card.Title>
+          <Card.Title className="text-center">{type?.type_name}</Card.Title>
           <Button
             style={{ width: "12rem" }}
             as={Link}
-            href={`/transmissions/${transmission?.id}`}
+            href={`/types/${type?.id}`}
             variant="primary"
             className="mt-auto align-self-center"
           >
-            Detail transmission
+            Detail type
           </Button>
         </Card.Body>
       </Card>
@@ -27,8 +25,8 @@ const TransmissionItem = ({ transmission }) => {
   );
 };
 
-TransmissionItem.propTypes = {
-  transmission: PropTypes.object,
+TypeItem.propTypes = {
+  type: PropTypes.object,
 };
 
-export default TransmissionItem;
+export default TypeItem;
