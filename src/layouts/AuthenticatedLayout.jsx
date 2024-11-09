@@ -13,9 +13,9 @@ export default function AuthenticatedLayout({
   openType,
   setOpenType,
   children,
-  setAvailabels,
-  setSpec,
-  setOptions,
+  setOpenAvailabels,
+  setOpenSpec,
+  setOpenOptions,
   openAvailabels,
   openSpec,
   openOptions,
@@ -33,9 +33,9 @@ export default function AuthenticatedLayout({
         setOpenManufacture={setOpenManufacture}
         openType={openType}
         setOpenType={setOpenType}
-        setAvailabels={setAvailabels}
-        setSpec={setSpec}
-        setOptions={setOptions}
+        setOpenAvailabels={setOpenAvailabels}
+        setOpenSpec={setOpenSpec}
+        setOpenOptions={setOpenOptions}
         openAvailabels={openAvailabels}
         openSpec={openSpec}
         openOptions={openOptions}

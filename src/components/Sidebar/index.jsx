@@ -138,9 +138,9 @@ function Sidebar({
   openType,
   setOpenType,
   children,
-  setAvailabels,
-  setSpec,
-  setOptions,
+  setOpenAvailabels,
+  setOpenSpec,
+  setOpenOptions,
   openAvailabels,
   openOptions,
   openSpec,
@@ -152,9 +152,9 @@ function Sidebar({
     setOpenManufacture(false);
     setOpenCars(false);
     setOpenType(false);
-    setAvailabels(false);
-    setSpec(false);
-    setOptions(false);
+    setOpenSpec(false);
+    setOpenAvailabels(false);
+    setOpenOptions(false);
     setterFunction((prev) => !prev); // Toggle the state
   };
 
@@ -285,7 +285,7 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setAvailabels)}
+                    onClick={() => handleClick(setOpenAvailabels)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Availabels
@@ -304,13 +304,14 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setSpec)}
+                    onClick={() => handleClick(setOpenSpec)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Spec
                     </span>
                   </Nav.Link>
                 </Nav.Item>
+
                 <Nav.Item
                   as={Row}
                   className="w-100"
@@ -323,7 +324,7 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOptions)}
+                    onClick={() => handleClick(setOpenOptions)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Options
@@ -435,9 +436,9 @@ export default function IndexSidebar({
               setOpenManufacture={setOpenManufacture}
               openType={openType}
               setOpenType={setOpenType}
-              setAvailabels={setAvailabels}
-              setSpec={setSpec}
-              setOptions={setOptions}
+              setOpenAvailabels={setAvailabels}
+              setOpenSpec={setSpec}
+              setOpenOptions={setOptions}
               openAvailabels={openAvailabels}
               openSpec={openSpec}
               openOptions={openOptions}
