@@ -60,16 +60,6 @@ function NavbarLocal() {
     navigate({ to: "/login" });
   };
 
-  const handleBrandClick = () => {
-    // Check user's role_id and redirect accordingly
-    if (user?.role_id === 1) {
-      navigate({ to: "/dashboard" });
-    } else if (user?.role_id === 2) {
-      navigate({ to: "/" });
-    } else {
-      navigate({ to: "/" });
-    }
-  };
   return (
     <>
       <Navbar expand="lg" className="bg-white px-5 shadow-sm">
@@ -135,6 +125,12 @@ function Sidebar({
   openType,
   setOpenType,
   children,
+  setAvailabels,
+  setSpec,
+  setOptions,
+  openAvailabels,
+  openOptions,
+  openSpec,
 }) {
   const handleClick = (setterFunction) => {
     setOpenCars(false);
@@ -143,6 +139,9 @@ function Sidebar({
     setOpenManufacture(false);
     setOpenCars(false);
     setOpenType(false);
+    setAvailabels(false);
+    setSpec(false);
+    setOptions(false);
     setterFunction((prev) => !prev); // Toggle the state
   };
 
@@ -177,6 +176,25 @@ function Sidebar({
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Cars
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openManufacture ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenManufacture)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Manufacturers
                     </span>
                   </Nav.Link>
                 </Nav.Item>
@@ -220,25 +238,7 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item
-                  as={Row}
-                  className="w-100"
-                  style={openManufacture ? { background: "#CFD4ED" } : {}}
-                >
-                  <Nav.Link
-                    as={Col}
-                    xs="auto"
-                    md={3}
-                    xl={0}
-                    href="#"
-                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenManufacture)}
-                  >
-                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Manufacturer
-                    </span>
-                  </Nav.Link>
-                </Nav.Item>
+
                 <Nav.Item
                   as={Row}
                   className="w-100"
@@ -255,6 +255,64 @@ function Sidebar({
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Type
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openAvailabels ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenType)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Availabels
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openSpec ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenType)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Spec
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
+                  style={openOptions ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenType)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Options
                     </span>
                   </Nav.Link>
                 </Nav.Item>
@@ -285,6 +343,12 @@ export default function IndexSidebar({
   setOpenManufacture,
   openType,
   setOpenType,
+  setAvailabels,
+  setSpec,
+  setOptions,
+  openAvailabels,
+  openSpec,
+  openOptions,
   children,
 }) {
   return (
@@ -352,6 +416,12 @@ export default function IndexSidebar({
               setOpenManufacture={setOpenManufacture}
               openType={openType}
               setOpenType={setOpenType}
+              setAvailabels={setAvailabels}
+              setSpec={setSpec}
+              setOptions={setOptions}
+              openAvailabels={openAvailabels}
+              openSpec={openSpec}
+              openOptions={openOptions}
             >
               {children}
             </Sidebar>

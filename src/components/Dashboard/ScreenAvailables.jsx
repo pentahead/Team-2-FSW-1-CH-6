@@ -1,46 +1,48 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import {
   Container,
-  Row,
   Col,
+  Row,
   Button,
   ListGroup,
-  Form,
+  Image,
   Card,
+  Form,
 } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import {
+  createManufacture,
+  deleteManufacture,
+  getDetailManufacture,
+  getManufacture,
+  updateManufacture,
+} from "../../service/manufacture";
+import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
-import {
-  createTransmission,
-  deleteTransmission,
-  getTransmission,
-  updateTransmission,
-  getDetailTransmission,
-} from "../../service/transmission";
-import { confirmAlert } from "react-confirm-alert";
 
-const ScreenTransmissions = () => {
+const ScreenManufactures = () => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [transmissions, setTransmissions] = useState([]);
+  const [manufactures, setManufactures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const [id, setId] = useState(null);
 
-  const getTransmissionData = async () => {
+  const getManufactureData = async () => {
     setIsLoading(true);
-    const result = await getTransmission();
+    const result = await getManufacture();
     if (result.success) {
-      setTransmissions(result.data);
+      setManufactures(result.data);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (token) {
-      getTransmissionData();
+      getManufactureData();
     }
   }, [token]);
 
@@ -49,7 +51,7 @@ const ScreenTransmissions = () => {
       <Row className="mt-4">
         <Col>
           <h1 className="text-center">
-            Please login first to get Transmission data!
+            Please login first to get Manufacture data!
           </h1>
         </Col>
       </Row>
@@ -77,10 +79,10 @@ const ScreenTransmissions = () => {
         {
           label: "Yes",
           onClick: async () => {
-            const result = await deleteTransmission(id);
+            const result = await deleteManufacture(id);
             if (result?.success) {
               toast.success("Data deleted successfully");
-              getTransmissionData();
+              getManufactureData();
               return;
             }
 
@@ -101,8 +103,8 @@ const ScreenTransmissions = () => {
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <div>
-              <h3 className="text-primary">Transmission</h3>
-              <h5 className="text-muted">Manage Transmission</h5>
+              <h3 className="text-primary">Manufacture</h3>
+              <h5 className="text-muted">Manage Manufacture</h5>
             </div>
           </div>
         </Col>
@@ -110,18 +112,18 @@ const ScreenTransmissions = () => {
 
       <Row className="mt-3">
         <Col>
-          <CreateTransmission
-            onTransmissionCreated={getTransmissionData}
+          <CreateManufacture
+            onManufactureCreated={getManufactureData}
             id={id}
             setId={setId}
           />
         </Col>
         <Col xs={6}>
           <ListGroup as="ul">
-            {transmissions.length === 0 ? (
-              <h1>Transmissions not found!</h1>
+            {manufactures.length === 0 ? (
+              <h1>Manufactures not found!</h1>
             ) : (
-              transmissions.map((transmission, index) => (
+              manufactures.map((manufacture, index) => (
                 <ListGroup.Item
                   as="li"
                   key={index}
@@ -133,21 +135,33 @@ const ScreenTransmissions = () => {
                     </Col>
                     <Col>
                       <h6 className="mb-0 text-dark">
-                        {transmission?.transmission_name}
+                        {" "}
+                        {manufacture?.manufacture_name}
                       </h6>
                     </Col>
-
+                    <Col>
+                      <h6 className="mb-0 text-dark">
+                        {" "}
+                        {manufacture?.manufacture_region}
+                      </h6>
+                    </Col>
+                    <Col>
+                      <h6 className="mb-0 text-dark">
+                        {manufacture?.year_establish}
+                      </h6>
+                    </Col>
                     <Col>
                       <div className="d-flex justify-content-center gap-3">
                         <Button
+                          as={Link}
                           variant="primary"
                           size="md"
-                          onClick={() => setId(transmission.id)}
+                          onClick={() => setId(manufacture.id)}
                         >
                           Edit
                         </Button>
                         <Button
-                          onClick={(event) => onDelete(event, transmission.id)}
+                          onClick={(event) => onDelete(event, manufacture.id)}
                           variant="danger"
                           size="md"
                         >
@@ -166,30 +180,34 @@ const ScreenTransmissions = () => {
   );
 };
 
-function CreateTransmission({ onTransmissionCreated, id, setId }) {
-  const [transmissionName, setTransmissionName] = useState("");
-  const [transmissionRegion, setTransmissionRegion] = useState("");
+function CreateManufacture({ onManufactureCreated, id, setId }) {
+  const [manufactureName, setManufactureName] = useState("");
+  const [manufactureRegion, setManufactureRegion] = useState("");
   const [year, setYear] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true); // Set loading to true when the form is being submitted
 
     const request = {
-      transmissionName,
+      manufactureName,
+      manufactureRegion,
+      year,
     };
 
     const result = id
-      ? await updateTransmission(id, request)
-      : await createTransmission(request);
+      ? await updateManufacture(id, request)
+      : await createManufacture(request);
 
-    setIsLoading(false);
+    setIsLoading(false); // Set loading to false after the request is complete
 
     if (result?.success) {
       toast.success("Data created successfully");
-      onTransmissionCreated();
-      setTransmissionName("");
+      onManufactureCreated();
+      setManufactureName("");
+      setManufactureRegion("");
+      setYear("");
       setId(null);
       return;
     } else {
@@ -200,24 +218,25 @@ function CreateTransmission({ onTransmissionCreated, id, setId }) {
   };
 
   useEffect(() => {
-    const fetchTransmissionDetail = async () => {
+    const fetchManufactureDetail = async () => {
       if (id) {
-        setIsLoading(true);
-        const result = await getDetailTransmission(id);
-        setIsLoading(false);
+        setIsLoading(true); // Set loading to true when fetching data
+        const result = await getDetailManufacture(id);
+        setIsLoading(false); // Set loading to false after fetching is done
         if (result?.success) {
-          setTransmissionName(result.data.transmission_name);
-          setYear(result.data.year);
+          setManufactureName(result.data.manufacture_name);
+          setManufactureRegion(result.data.manufacture_region);
+          setYear(result.data.year_establish);
         }
       }
     };
 
-    fetchTransmissionDetail();
+    fetchManufactureDetail();
   }, [id]);
 
   return (
     <Card>
-      <Card.Header className="text-center">Create Transmission</Card.Header>
+      <Card.Header className="text-center">Create Manufacture</Card.Header>
       <Card.Body>
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center">
@@ -225,7 +244,7 @@ function CreateTransmission({ onTransmissionCreated, id, setId }) {
           </div>
         ) : (
           <Form onSubmit={onSubmit}>
-            <Form.Group as={Row} className="mb-3" controlId="transmission_name">
+            <Form.Group as={Row} className="mb-3" controlId="manufacture_name">
               <Form.Label column sm={3}>
                 Name
               </Form.Label>
@@ -234,10 +253,40 @@ function CreateTransmission({ onTransmissionCreated, id, setId }) {
                   type="text"
                   placeholder="Name"
                   required
-                  value={transmissionName}
-                  onChange={(event) => {
-                    setTransmissionName(event.target.value);
-                  }}
+                  value={manufactureName}
+                  onChange={(event) => setManufactureName(event.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="manufacture_region"
+            >
+              <Form.Label column sm={3}>
+                Manufacture region
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="text"
+                  placeholder="Manufacture region"
+                  required
+                  value={manufactureRegion}
+                  onChange={(event) => setManufactureRegion(event.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3" controlId="year">
+              <Form.Label column sm={3}>
+                Year
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control
+                  type="number"
+                  placeholder="Year"
+                  required
+                  value={year}
+                  onChange={(event) => setYear(event.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -248,8 +297,8 @@ function CreateTransmission({ onTransmissionCreated, id, setId }) {
                     ? "Updating..."
                     : "Creating..."
                   : id
-                    ? "Update Transmission"
-                    : "Create Transmission"}
+                    ? "Update Manufacture"
+                    : "Create Manufacture"}
               </Button>
             </div>
           </Form>
@@ -259,4 +308,4 @@ function CreateTransmission({ onTransmissionCreated, id, setId }) {
   );
 }
 
-export default ScreenTransmissions;
+export default ScreenManufactures;

@@ -13,10 +13,16 @@ export default function AuthenticatedLayout({
   openType,
   setOpenType,
   children,
+  setAvailabels,
+  setSpec,
+  setOptions,
+  openAvailabels,
+  openSpec,
+  openOptions,
 }) {
   return (
     <>
-      <Sidebar 
+      <Sidebar
         openCars={openCars}
         setOpenCars={setOpenCars}
         openTransmission={openTransmission}
@@ -27,6 +33,12 @@ export default function AuthenticatedLayout({
         setOpenManufacture={setOpenManufacture}
         openType={openType}
         setOpenType={setOpenType}
+        setAvailabels={setAvailabels}
+        setSpec={setSpec}
+        setOptions={setOptions}
+        openAvailabels={openAvailabels}
+        openSpec={openSpec}
+        openOptions={openOptions}
       >
         {children}
       </Sidebar>
