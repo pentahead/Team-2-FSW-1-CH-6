@@ -81,7 +81,6 @@ function CreateCar() {
           <Card.Header className="text-center">Create Car</Card.Header>
           <Card.Body>
             <Form onSubmit={onSubmit}>
-              {/* Input fields for plate, rentPerDay, description, year, availableStatus, modelId */}
               <Form.Group as={Row} className="mb-3" controlId="plate">
                 <Form.Label column sm={3}>
                   Plate

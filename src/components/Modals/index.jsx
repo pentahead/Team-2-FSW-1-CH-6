@@ -9,6 +9,7 @@ import Card from "react-bootstrap/Card";
 import { deleteCar, getDetailCar } from "../../service/cars";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
+import { MoonLoader } from "react-spinners";
 
 const MyVerticallyCenteredModal = (props) => {
   const { id, setOpenForm } = props;
@@ -59,10 +60,11 @@ function CarDetail({ id, setOpenForm, onHide }) {
 
   if (isLoading) {
     return (
-      <Row className="mt-5">
-        <Col>
-          <h1 className="text-center">Loading...</h1>
-        </Col>
+      <Row
+        className="mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }} // Agar menempati seluruh tinggi viewport
+      >
+        <MoonLoader color="#1306ff" />
       </Row>
     );
   }
@@ -79,6 +81,7 @@ function CarDetail({ id, setOpenForm, onHide }) {
 
   const onDelete = async (event) => {
     event.preventDefault();
+    onHide();
 
     confirmAlert({
       title: "Confirm to delete",
@@ -89,7 +92,7 @@ function CarDetail({ id, setOpenForm, onHide }) {
           onClick: async () => {
             const result = await deleteCar(id);
             if (result?.success) {
-              navigate({ to: "/cars" });
+              navigate({ to: "/dashboard" });
               return;
             }
 

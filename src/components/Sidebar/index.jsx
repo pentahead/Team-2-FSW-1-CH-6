@@ -12,13 +12,67 @@ import {
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { profile } from "../../service/auth";
+import { setToken, setUser } from "../../redux/slices/auth";
 
 function NavbarLocal() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const getProfile = async () => {
+      // fetch get profile
+      const result = await profile();
+      if (result.success) {
+        // set the user state here
+        dispatch(setUser(result.data));
+        return;
+      }
+
+      // If not success
+      // delete the local storage here
+      dispatch(setUser(null));
+      dispatch(setToken(null));
+
+      // redirect to login
+      navigate({ to: "/login" });
+    };
+
+    if (token) {
+      // hit api auth get profile and pass the token to the function
+      getProfile();
+    }
+  }, [dispatch, navigate, token]);
+
+  const logout = (event) => {
+    event.preventDefault();
+
+    // delete the local storage here
+    dispatch(setUser(null));
+    dispatch(setToken(null));
+
+    // redirect to login
+    navigate({ to: "/login" });
+  };
+
+  const handleBrandClick = () => {
+    // Check user's role_id and redirect accordingly
+    if (user?.role_id === 1) {
+      navigate({ to: "/dashboard" });
+    } else if (user?.role_id === 2) {
+      navigate({ to: "/" });
+    } else {
+      navigate({ to: "/" });
+    }
+  };
   return (
     <>
-      <Navbar expand="lg" className="bg-white px-0 shadow-sm">
+      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
         <Container fluid className="d-flex flex-row justify-content-end  gap-2">
           <Form className="d-flex">
             <Form.Control
@@ -30,9 +84,9 @@ function NavbarLocal() {
             <Button variant="outline-success">Search</Button>
           </Form>
           <Nav>
-            <Nav.Link as={Link} to="/profile">
+            <Nav.Link>
               <Image
-                src={""}
+                src={user?.profile_picture}
                 fluid
                 style={{
                   width: "30px",
@@ -45,7 +99,7 @@ function NavbarLocal() {
             </Nav.Link>
             <Dropdown as={ButtonGroup} className="border-0">
               <Button className="bg-white px-4 text-black border-0">
-                user
+                {user?.name}
               </Button>
 
               <Dropdown.Toggle
@@ -56,9 +110,10 @@ function NavbarLocal() {
               />
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/profile">
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Nav>
@@ -93,7 +148,7 @@ function Sidebar({
 
   return (
     <>
-      <Container fluid >
+      <Container fluid>
         <Row className="flex-nowrap w-">
           <Col
             xs="auto"
@@ -145,7 +200,7 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                
+
                 <Nav.Item
                   as={Row}
                   className="w-100"
