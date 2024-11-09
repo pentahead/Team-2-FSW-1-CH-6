@@ -1,10 +1,17 @@
-import { Container, Col, Row, Button, ListGroup } from "react-bootstrap";
+import { Container, Col, Row, Button, ListGroup, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CarItem from "../Car";
 import MyVerticallyCenteredModal from "../Modals";
-import { getCars } from "../../service/cars";
+import {
+  createCar,
+  getCars,
+  getDetailCar,
+  updateCar,
+} from "../../service/cars";
 import { MoonLoader } from "react-spinners";
+import { getModels } from "../../service/models";
+import { getAvailables } from "../../service/availables";
 // import FormComponent from "./FormComponent";
 
 const ScreenCars = () => {
@@ -46,7 +53,7 @@ const ScreenCars = () => {
     return (
       <Row
         className="mt-4 d-flex justify-content-center align-items-center"
-        style={{ minHeight: "100vh" }} // Agar menempati seluruh tinggi viewport
+        style={{ minHeight: "100vh" }}
       >
         <MoonLoader color="#1306ff" />
       </Row>

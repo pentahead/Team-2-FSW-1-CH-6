@@ -23,9 +23,9 @@ export default function Dashboard() {
   const [openModel, setOpenModel] = useState(false);
   const [openManufacture, setOpenManufacture] = useState(false);
   const [openType, setOpenType] = useState(false);
-  const [openAvailabels, setAvailabels] = useState(false);
-  const [openSpec, setSpec] = useState(false);
-  const [openOptions, setOptions] = useState(false);
+  const [openAvailabels, setOpenAvailabels] = useState(false);
+  const [openSpec, setOpenSpec] = useState(false);
+  const [openOptions, setOpenOptions] = useState(false);
   return (
     <>
       <AuthenticatedLayout
@@ -39,9 +39,9 @@ export default function Dashboard() {
         setOpenManufacture={setOpenManufacture}
         openType={openType}
         setOpenType={setOpenType}
-        setAvailabels={setAvailabels}
-        setSpec={setSpec}
-        setOptions={setOptions}
+        setOpenAvailabels={setOpenAvailabels}
+        setOpenSpec={setOpenSpec}
+        setOpenOptions={setOpenOptions}
         openAvailabels={openAvailabels}
         openSpec={openSpec}
         openOptions={openOptions}
