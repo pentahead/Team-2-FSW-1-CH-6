@@ -35,7 +35,6 @@ function NavbarLocal() {
     // redirect to login
     navigate({ to: "/login" });
   };
-<<<<<<< HEAD
   const { user, token } = useSelector((state) => state.auth);
   return (
     <>
@@ -44,14 +43,6 @@ function NavbarLocal() {
           fluid
           className="d-flex flex-row justify-content-end  gap-2  "
         >
-=======
-
-  return (
-    <>
-      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
-      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
-        <Container fluid className="d-flex flex-row justify-content-end  gap-2">
->>>>>>> 149b28c (resolve conflict)
           <Form className="d-flex">
             <Form.Control
               type="search"
@@ -62,7 +53,6 @@ function NavbarLocal() {
             <Button variant="outline-success">Search</Button>
           </Form>
           <Nav>
-            <Nav.Link>
             <Nav.Link>
               <Image
                 src={user?.profile_picture}
@@ -150,7 +140,6 @@ function Sidebar({
             xl={2}
             className="bg-white shadow-sm px-0 mx-0 "
           >
-            <div className="d-flex flex-column align-items-center align-items-sm-start px-0 pt-0 text-black max-vh-100 m-0 p-0">
             <div className="d-flex flex-column align-items-center align-items-sm-start px-0 pt-0 text-black max-vh-100 m-0 p-0">
               <Nav
                 className="flex-column mb-sm-auto align-items-center align-items-sm- w-100 m-0 p-0 m-0"
@@ -341,10 +330,6 @@ function Sidebar({
             className="m-0 p-0   min-vh-100 "
             style={{ background: "#F4F5F7" }}
           >
-          <Col
-            className="m-0 p-0   min-vh-100 "
-            style={{ background: "#F4F5F7" }}
-          >
             {children}
           </Col>
         </Row>
@@ -383,7 +368,6 @@ export default function IndexSidebar({
             className=" p-0"
             style={{ width: "3rem", background: "#0D28A6" }}
           >
-            <div className="d-flex flex-column  align-items-center align-items-sm-start  text-black   min-vh-100 overflow-hidden  m-0 p-0 mt-3 pt-5 ">
             <div className="d-flex flex-column  align-items-center align-items-sm-start  text-black   min-vh-100 overflow-hidden  m-0 p-0 mt-3 pt-5 ">
               <Nav
                 // variant="pills"
