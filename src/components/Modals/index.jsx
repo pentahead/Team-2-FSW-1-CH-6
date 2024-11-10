@@ -21,7 +21,7 @@ const MyVerticallyCenteredModal = (props) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton onClick={() => setId(null)}>
         <Modal.Title id="contained-modal-title-vcenter">Detail Car</Modal.Title>
       </Modal.Header>
       <Modal.Body>
