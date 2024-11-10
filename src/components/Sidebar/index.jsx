@@ -16,6 +16,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../../redux/slices/auth";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { profile } from "../../service/auth";
+import { setToken, setUser } from "../../redux/slices/auth";
 
 function NavbarLocal() {
   const dispatch = useDispatch();
@@ -30,6 +35,7 @@ function NavbarLocal() {
     // redirect to login
     navigate({ to: "/login" });
   };
+<<<<<<< HEAD
   const { user, token } = useSelector((state) => state.auth);
   return (
     <>
@@ -38,6 +44,24 @@ function NavbarLocal() {
           fluid
           className="d-flex flex-row justify-content-end  gap-2  "
         >
+=======
+
+  const handleBrandClick = () => {
+    // Check user's role_id and redirect accordingly
+    if (user?.role_id === 1) {
+      navigate({ to: "/dashboard" });
+    } else if (user?.role_id === 2) {
+      navigate({ to: "/" });
+    } else {
+      navigate({ to: "/" });
+    }
+  };
+  return (
+    <>
+      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
+      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
+        <Container fluid className="d-flex flex-row justify-content-end  gap-2">
+>>>>>>> 149b28c (resolve conflict)
           <Form className="d-flex">
             <Form.Control
               type="search"
@@ -49,7 +73,9 @@ function NavbarLocal() {
           </Form>
           <Nav>
             <Nav.Link>
+            <Nav.Link>
               <Image
+                src={user?.profile_picture}
                 src={user?.profile_picture}
                 fluid
                 style={{
@@ -64,6 +90,7 @@ function NavbarLocal() {
             <Dropdown as={ButtonGroup} className="border-0 me-5">
               <Button className="bg-white px-4 text-black border-0">
                 {user?.name}
+                {user?.name}
               </Button>
 
               <Dropdown.Toggle
@@ -74,6 +101,10 @@ function NavbarLocal() {
               />
 
               <Dropdown.Menu>
+                <Dropdown.Item as={Link} to="/profile">
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                 <Dropdown.Item as={Link} to="/profile">
                   Profile
                 </Dropdown.Item>
@@ -121,7 +152,7 @@ function Sidebar({
 
   return (
     <>
-      <Container fluid >
+      <Container fluid>
         <Row className="flex-nowrap w-">
           <Col
             xs="auto"
@@ -174,7 +205,7 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                
+
                 <Nav.Item
                   as={Row}
                   className="w-100"

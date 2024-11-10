@@ -1,118 +1,31 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  ListGroup,
-  Image,
-  Card,
-  Form,
-} from "react-bootstrap";
-import { useSelector } from "react-redux";
-import {
-  createModel,
-  deleteModel,
-  getDetailModel,
-  getModels,
-  updateModel,
-} from "../../service/models";
-
-import { confirmAlert } from "react-confirm-alert";
-import { toast } from "react-toastify";
-import { MoonLoader } from "react-spinners";
-import { getTransmission } from "../../service/transmission";
-import { getType } from "../../service/type";
-import { getManufacture } from "../../service/manufacture";
-import { getSpecs } from "../../service/specs";
-import { getOption } from "../../service/option";
+import { Container, Col, Row, Button, ListGroup } from "react-bootstrap";
+import CarItem from "../Car";
 
 const ScreenModels = () => {
-  const { token } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-
-  const [models, setModels] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [id, setId] = useState(null);
-
-  const getModelData = async () => {
-    setIsLoading(true);
-    const result = await getModels();
-    if (result.success) {
-      setModels(result.data);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (token) {
-      getModelData();
-    }
-  }, [token]);
-
-  if (!token) {
-    return (
-      <Row className="mt-4">
-        <Col>
-          <h1 className="text-center">Please login first to get Model data!</h1>
-        </Col>
-      </Row>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <Row
-        className="mt-4 d-flex justify-content-center align-items-center"
-        style={{ minHeight: "100vh" }}
-      >
-        <MoonLoader color="#1306ff" />
-      </Row>
-    );
-  }
-
-  const onDelete = async (event, id) => {
-    event.preventDefault();
-
-    confirmAlert({
-      title: "Confirm to delete",
-      message: "Are you sure to delete this data?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            const result = await deleteModel(id);
-            if (result?.success) {
-              toast.success("Data deleted successfully");
-              getModelData();
-              return;
-            }
-
-            toast.error(result?.message);
-          },
-        },
-        {
-          label: "No",
-          onClick: () => {},
-        },
-      ],
-    });
-  };
-
   return (
-    <Container className="mt-2">
-      <Row>
-        <Col>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <h3 className="text-primary">Model</h3>
-              <h5 className="text-muted">Manage Models</h5>
-            </div>
-          </div>
-        </Col>
-      </Row>
+    <>
+      <Container className="mt-2">
+        <Row>
+          <Col>
+            <h3>Cars Models</h3>
+            <Row className="mb-3 justify-content-between">
+              <Col>
+                <h3>Models</h3>
+              </Col>
+              <Col className="d-flex flex-row justify-content-end">
+                <Button variant="success">Add New Car</Button>
+              </Col>
+            </Row>
+            <Row>
+              <ListGroup horizontal className="px-3 gap-3 w-25">
+                <ListGroup.Item action>All</ListGroup.Item>
+                <ListGroup.Item action>Small</ListGroup.Item>
+                <ListGroup.Item action>Medium</ListGroup.Item>
+                <ListGroup.Item action>Large</ListGroup.Item>
+              </ListGroup>
+            </Row>
+          </Col>
+        </Row>
 
       <Row className="mt-3">
         <Col>
