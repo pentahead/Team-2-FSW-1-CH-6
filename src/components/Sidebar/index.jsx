@@ -12,15 +12,11 @@ import {
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../../redux/slices/auth";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useDispatch, useSelector } from "react-redux";
 import { profile } from "../../service/auth";
-import { setToken, setUser } from "../../redux/slices/auth";
 
 function NavbarLocal() {
   const dispatch = useDispatch();

@@ -21,15 +21,6 @@ import {
   getAvailables,
 } from "../../service/availables";
 
-import { confirmAlert } from "react-confirm-alert";
-import {
-  createAvailable,
-  deleteAvailable,
-  updateAvailable,
-  getDetailAvailable,
-  getAvailables,
-} from "../../service/availables";
-
 const ScreenAvailables = () => {
   const { token } = useSelector((state) => state.auth);
 
