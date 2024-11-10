@@ -14,6 +14,8 @@ import ScreenOptions from "../../components/Dashboard/ScreenOptions";
 =======
 >>>>>>> 71a0f30 (Finishing CRUD Car)
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
+// import ScreenSpec from "../../components/Dashboard/ScreenSpec"; // Pastikan ini diimport
+// import ScreenOptions from "../../components/Dashboard/ScreenOptions"; // Pastikan ini diimport
 
 export const Route = createLazyFileRoute("/dashboard/")({
   component: () => (
@@ -29,9 +31,10 @@ export default function Dashboard() {
   const [openModel, setOpenModel] = useState(false);
   const [openManufacture, setOpenManufacture] = useState(false);
   const [openType, setOpenType] = useState(false);
-  const [openAvailabels, setOpenAvailabels] = useState(false);
+  const [openAvailables, setOpenAvailables] = useState(false); // Perbaiki nama state menjadi openAvailables
   const [openSpec, setOpenSpec] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
+
   return (
     <>
       <AuthenticatedLayout
@@ -45,10 +48,10 @@ export default function Dashboard() {
         setOpenManufacture={setOpenManufacture}
         openType={openType}
         setOpenType={setOpenType}
-        setOpenAvailabels={setOpenAvailabels}
+        setOpenAvailables={setOpenAvailables} // Pastikan ini diteruskan ke layout
         setOpenSpec={setOpenSpec}
         setOpenOptions={setOpenOptions}
-        openAvailabels={openAvailabels}
+        openAvailables={openAvailables} // Pastikan ini diteruskan ke layout
         openSpec={openSpec}
         openOptions={openOptions}
       >
@@ -57,12 +60,18 @@ export default function Dashboard() {
         {openTransmission && <ScreenTransmission />}
         {openModel && <ScreenModels />}
         {openType && <ScreenType />}
+<<<<<<< HEAD
         {openAvailabels && <ScreenAvailables />}
         {openSpec && <ScreenSpecs />}
         {openOptions && <ScreenOptions />}
         {openAvailabels && <ScreenAvailables />}
         {/* {openSpec && <ScreenSpec />} */}
         {/* {openOptions && <ScreenOptions />}  */}
+=======
+        {openAvailables && <ScreenAvailables />}{" "}
+        {/* {openSpec && <ScreenSpec />}
+        {openOptions && <ScreenOptions />}{" "} */}
+>>>>>>> 93767ea (availables)
       </AuthenticatedLayout>
     </>
   );

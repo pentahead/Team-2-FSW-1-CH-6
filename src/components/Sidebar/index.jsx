@@ -12,63 +12,13 @@ import {
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { profile } from "../../service/auth";
-import { setToken, setUser } from "../../redux/slices/auth";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { profile } from "../../service/auth";
-import { setToken, setUser } from "../../redux/slices/auth";
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 function NavbarLocal() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { user, token } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    const getProfile = async () => {
-      // fetch get profile
-      const result = await profile();
-      if (result.success) {
-        // set the user state here
-        dispatch(setUser(result.data));
-        return;
-      }
-
-      // If not success
-      // delete the local storage here
-      dispatch(setUser(null));
-      dispatch(setToken(null));
-
-      // redirect to login
-      navigate({ to: "/login" });
-    };
-
-    if (token) {
-      // hit api auth get profile and pass the token to the function
-      getProfile();
-    }
-  }, [dispatch, navigate, token]);
-
-  const logout = (event) => {
-    event.preventDefault();
-
-    // delete the local storage here
-    dispatch(setUser(null));
-    dispatch(setToken(null));
-
-    // redirect to login
-    navigate({ to: "/login" });
-  };
-
   return (
     <>
-      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
-      <Navbar expand="lg" className="bg-white px-5 shadow-sm">
+      <Navbar expand="lg" className="bg-white px-0 shadow-sm">
         <Container fluid className="d-flex flex-row justify-content-end  gap-2">
           <Form className="d-flex">
             <Form.Control
@@ -80,11 +30,9 @@ function NavbarLocal() {
             <Button variant="outline-success">Search</Button>
           </Form>
           <Nav>
-            <Nav.Link>
-            <Nav.Link>
+            <Nav.Link as={Link} to="/profile">
               <Image
-                src={user?.profile_picture}
-                src={user?.profile_picture}
+                src={""}
                 fluid
                 style={{
                   width: "30px",
@@ -97,8 +45,7 @@ function NavbarLocal() {
             </Nav.Link>
             <Dropdown as={ButtonGroup} className="border-0">
               <Button className="bg-white px-4 text-black border-0">
-                {user?.name}
-                {user?.name}
+                user
               </Button>
 
               <Dropdown.Toggle
@@ -109,14 +56,9 @@ function NavbarLocal() {
               />
 
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/profile">
-                  Profile
-                </Dropdown.Item>
-                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/profile">
-                  Profile
-                </Dropdown.Item>
-                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Nav>
@@ -137,13 +79,13 @@ function Sidebar({
   setOpenManufacture,
   openType,
   setOpenType,
-  children,
-  setOpenAvailabels,
-  setOpenSpec,
-  setOpenOptions,
-  openAvailabels,
-  openOptions,
+  openAvailables, // konsisten dengan "openAvailables"
+  setOpenAvailables, // konsisten dengan "setOpenAvailables"
   openSpec,
+  setOpenSpec,
+  openOptions,
+  setOpenOptions,
+  children,
 }) {
   const handleClick = (setterFunction) => {
     setOpenCars(false);
@@ -152,8 +94,8 @@ function Sidebar({
     setOpenManufacture(false);
     setOpenCars(false);
     setOpenType(false);
+    setOpenAvailables(false);
     setOpenSpec(false);
-    setOpenAvailabels(false);
     setOpenOptions(false);
     setterFunction((prev) => !prev); // Toggle the state
   };
@@ -190,25 +132,6 @@ function Sidebar({
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Cars
-                    </span>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item
-                  as={Row}
-                  className="w-100"
-                  style={openManufacture ? { background: "#CFD4ED" } : {}}
-                >
-                  <Nav.Link
-                    as={Col}
-                    xs="auto"
-                    md={3}
-                    xl={0}
-                    href="#"
-                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenManufacture)}
-                  >
-                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Manufacturers
                     </span>
                   </Nav.Link>
                 </Nav.Item>
@@ -256,6 +179,26 @@ function Sidebar({
                 <Nav.Item
                   as={Row}
                   className="w-100"
+                  style={openManufacture ? { background: "#CFD4ED" } : {}}
+                >
+                  <Nav.Link
+                    as={Col}
+                    xs="auto"
+                    md={3}
+                    xl={0}
+                    href="#"
+                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
+                    onClick={() => handleClick(setOpenManufacture)}
+                  >
+                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
+                      Manufacturer
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item
+                  as={Row}
+                  className="w-100"
                   style={openType ? { background: "#CFD4ED" } : {}}
                 >
                   <Nav.Link
@@ -272,11 +215,10 @@ function Sidebar({
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-
                 <Nav.Item
                   as={Row}
                   className="w-100"
-                  style={openAvailabels ? { background: "#CFD4ED" } : {}}
+                  style={openAvailables ? { background: "#CFD4ED" } : {}}
                 >
                   <Nav.Link
                     as={Col}
@@ -285,13 +227,14 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenAvailabels)}
+                    onClick={() => handleClick(setOpenAvailables)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Availabels
+                      Availables
                     </span>
                   </Nav.Link>
                 </Nav.Item>
+
                 <Nav.Item
                   as={Row}
                   className="w-100"
@@ -327,7 +270,7 @@ function Sidebar({
                     onClick={() => handleClick(setOpenOptions)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Options
+                      options
                     </span>
                   </Nav.Link>
                 </Nav.Item>
@@ -362,12 +305,12 @@ export default function IndexSidebar({
   setOpenManufacture,
   openType,
   setOpenType,
-  setAvailabels,
-  setSpec,
-  setOptions,
-  openAvailabels,
+  openAvailables, // konsisten dengan "openAvailables"
+  setOpenAvailables, // konsisten dengan "setOpenAvailables"
   openSpec,
+  setOpenSpec,
   openOptions,
+  setOpenOptions,
   children,
 }) {
   return (
@@ -436,10 +379,10 @@ export default function IndexSidebar({
               setOpenManufacture={setOpenManufacture}
               openType={openType}
               setOpenType={setOpenType}
-              setOpenAvailabels={setAvailabels}
-              setOpenSpec={setSpec}
-              setOpenOptions={setOptions}
-              openAvailabels={openAvailabels}
+              setOpenAvailables={setOpenAvailables} // Pastikan ini diteruskan ke layout
+              setOpenSpec={setOpenSpec}
+              setOpenOptions={setOpenOptions}
+              openAvailables={openAvailables} // Pastikan ini diteruskan ke layout
               openSpec={openSpec}
               openOptions={openOptions}
             >

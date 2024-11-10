@@ -1,26 +1,24 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  ListGroup,
-  Image,
-  Card,
-  Form,
-} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
-  createAvailable,
-  updateAvailable,
-  getAvailables,
-  getDetailAvailable,
-  deleteAvailable,
-} from "../../service/availables";
-import { confirmAlert } from "react-confirm-alert";
+  Container,
+  Row,
+  Col,
+  Button,
+  ListGroup,
+  Form,
+  Card,
+} from "react-bootstrap";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
+import { confirmAlert } from "react-confirm-alert";
+import {
+  createAvailable,
+  getAvailables,
+  getDetailAvailable,
+  updateAvailable,
+} from "../../service/availables";
 
 const ScreenAvailables = () => {
   const { token } = useSelector((state) => state.auth);
@@ -28,7 +26,6 @@ const ScreenAvailables = () => {
 
   const [availables, setAvailabels] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const [id, setId] = useState(null);
 
   const getAvailableData = async () => {
@@ -121,9 +118,9 @@ const ScreenAvailables = () => {
         <Col xs={6}>
           <ListGroup as="ul">
             {availables.length === 0 ? (
-              <h1>Available not found!</h1>
+              <h1>Availables not found!</h1>
             ) : (
-              availables.map((availables, index) => (
+              availables.map((available, index) => (
                 <ListGroup.Item
                   as="li"
                   key={index}
@@ -139,10 +136,10 @@ const ScreenAvailables = () => {
                         {availables?.available_status}
                       </h6>
                     </Col>
+
                     <Col>
                       <div className="d-flex justify-content-center gap-3">
                         <Button
-                          as={Link}
                           variant="primary"
                           size="md"
                           onClick={() => setId(availables.id)}
@@ -171,21 +168,22 @@ const ScreenAvailables = () => {
 
 function CreateAvailable({ onAvailableCreated, id, setId }) {
   const [availableStatus, setAvailableName] = useState("");
+  const [availableName, setAvailableName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true); // Set loading to true when the form is being submitted
+    setIsLoading(true);
 
     const request = {
       availableStatus,
     };
 
     const result = id
-      ? await updateAvailable(id, request)
-      : await createAvailable(request);
+      ? await updateAvailable(id, request) // ganti dengan API yang sesuai
+      : await createAvailable(request); // ganti dengan API yang sesuai
 
-    setIsLoading(false); // Set loading to false after the request is complete
+    setIsLoading(false);
 
     if (result?.success) {
       toast.success("Data created successfully");
@@ -232,10 +230,12 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
               <Col sm="9">
                 <Form.Control
                   type="text"
-                  placeholder="Name"
+                  placeholder="Available Name"
                   required
-                  value={availableStatus}
-                  onChange={(event) => setAvailableName(event.target.value)}
+                  value={availableName}
+                  onChange={(event) => {
+                    setAvailableName(event.target.value);
+                  }}
                 />
               </Col>
             </Form.Group>
