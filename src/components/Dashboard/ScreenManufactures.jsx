@@ -113,67 +113,10 @@ const ScreenManufactures = () => {
       <Row className="mt-3">
         <Col>
           <CreateManufacture
-            onManufactureCreated={getManufactureData}
+            onManufactureCreated={getManufacture}
             id={id}
             setId={setId}
           />
-        </Col>
-        <Col xs={6}>
-          <ListGroup as="ul">
-            {manufactures.length === 0 ? (
-              <h1>Manufactures not found!</h1>
-            ) : (
-              manufactures.map((manufacture, index) => (
-                <ListGroup.Item
-                  as="li"
-                  key={index}
-                  className="py-3 border-bottom"
-                >
-                  <Row className="align-items-center">
-                    <Col xs="auto">
-                      <span>{index + 1}</span>
-                    </Col>
-                    <Col>
-                      <h6 className="mb-0 text-dark">
-                        {" "}
-                        {manufacture?.manufacture_name}
-                      </h6>
-                    </Col>
-                    <Col>
-                      <h6 className="mb-0 text-dark">
-                        {" "}
-                        {manufacture?.manufacture_region}
-                      </h6>
-                    </Col>
-                    <Col>
-                      <h6 className="mb-0 text-dark">
-                        {manufacture?.year_establish}
-                      </h6>
-                    </Col>
-                    <Col>
-                      <div className="d-flex justify-content-center gap-3">
-                        <Button
-                          as={Link}
-                          variant="primary"
-                          size="md"
-                          onClick={() => setId(manufacture.id)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={(event) => onDelete(event, manufacture.id)}
-                          variant="danger"
-                          size="md"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))
-            )}
-          </ListGroup>
         </Col>
       </Row>
     </Container>
@@ -233,6 +176,23 @@ function CreateManufacture({ onManufactureCreated, id, setId }) {
 
     toast.error(result?.message);
   };
+
+  useEffect(() => {
+    const fetchManufactureDetail = async () => {
+      if (id) {
+        setIsLoading(true); // Set loading to true when fetching data
+        const result = await getDetailManufacture(id);
+        setIsLoading(false); // Set loading to false after fetching is done
+        if (result?.success) {
+          setManufactureName(result.data.manufacture_name);
+          setManufactureRegion(result.data.manufacture_region);
+          setYear(result.data.year_establish);
+        }
+      }
+    };
+
+    fetchManufactureDetail();
+  }, [id]);
 
   return (
     <Card>
