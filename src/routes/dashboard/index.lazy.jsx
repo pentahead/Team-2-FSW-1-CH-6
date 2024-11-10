@@ -9,8 +9,7 @@ import ScreenType from "../../components/Dashboard/ScreenType";
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
 import ScreenSpecs from "../../components/Dashboard/ScreenSpecs";
 import ScreenOptions from "../../components/Dashboard/ScreenOptions";
-import ScreenCars from "../../components/dashboard/ScreenCars";
-  
+import ScreenCars from "../../components/Dashboard/ScreenCars";
 
 export const Route = createLazyFileRoute("/dashboard/")({
   component: () => (
