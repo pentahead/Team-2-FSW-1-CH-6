@@ -55,8 +55,7 @@ function NavbarLocal() {
           <Nav>
             <Nav.Link>
               <Image
-                src={user?.profile_picture}
-                src={user?.profile_picture}
+                src={""}
                 fluid
                 style={{
                   width: "30px",
@@ -69,8 +68,7 @@ function NavbarLocal() {
             </Nav.Link>
             <Dropdown as={ButtonGroup} className="border-0 me-5">
               <Button className="bg-white px-4 text-black border-0">
-                {user?.name}
-                {user?.name}
+                user
               </Button>
 
               <Dropdown.Toggle
@@ -81,14 +79,9 @@ function NavbarLocal() {
               />
 
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/profile">
-                  Profile
-                </Dropdown.Item>
-                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                <Dropdown.Item as={Link} to="/profile">
-                  Profile
-                </Dropdown.Item>
-                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Nav>
@@ -161,25 +154,6 @@ function Sidebar({
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Cars
-                    </span>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item
-                  as={Row}
-                  className="w-100"
-                  style={openManufacture ? { background: "#CFD4ED" } : {}}
-                >
-                  <Nav.Link
-                    as={Col}
-                    xs="auto"
-                    md={3}
-                    xl={0}
-                    href="#"
-                    className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenManufacture)}
-                  >
-                    <span className="ms-5 d-none d-sm-inline fs-5 w-100">
-                      Manufacturers
                     </span>
                   </Nav.Link>
                 </Nav.Item>
