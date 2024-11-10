@@ -2,7 +2,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ListGroup, Row } from "react-bootstrap";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -10,6 +10,7 @@ import { deleteCar, getDetailCar } from "../../service/cars";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import { MoonLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 const MyVerticallyCenteredModal = (props) => {
   const { id, setOpenForm } = props;
@@ -39,6 +40,8 @@ function CarDetail({ id, setOpenForm, onHide }) {
   const [car, setCar] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
+  const { token } = useSelector((state) => state.auth);
+  const location = useLocation(); // mendapatkan lokasi saat ini
 
   useEffect(() => {
     const getDetailCarData = async (id) => {
@@ -250,31 +253,33 @@ function CarDetail({ id, setOpenForm, onHide }) {
             </Row>
 
             {/* Tombol untuk Edit */}
-            <Card.Text>
-              <div className="d-grid gap-2 mt-2">
-                <Button
-                  as={Link}
-                  // href={`/cars/edit/${id}`}
-                  onClick={() => {
-                    setOpenForm(true);
-                    onHide();
-                  }}
-                  variant="primary"
-                  size="md"
-                >
-                  Edit car
-                </Button>
-              </div>
-            </Card.Text>
+            {token && location.pathname === "/dashboard" && (
+              <>
+                <Card.Text>
+                  <div className="d-grid gap-2 mt-2">
+                    <Button
+                      as={Link}
+                      onClick={() => {
+                        setOpenForm(true);
+                        onHide();
+                      }}
+                      variant="primary"
+                      size="md"
+                    >
+                      Edit car
+                    </Button>
+                  </div>
+                </Card.Text>
 
-            {/* Tombol untuk Delete */}
-            <Card.Text>
-              <div className="d-grid gap-2">
-                <Button onClick={onDelete} variant="danger" size="md">
-                  Delete car
-                </Button>
-              </div>
-            </Card.Text>
+                <Card.Text>
+                  <div className="d-grid gap-2">
+                    <Button onClick={onDelete} variant="danger" size="md">
+                      Delete car
+                    </Button>
+                  </div>
+                </Card.Text>
+              </>
+            )}
           </dl>
         </Card.Body>
       </Card>
