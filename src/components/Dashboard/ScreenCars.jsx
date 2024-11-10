@@ -1,16 +1,4 @@
-<<<<<<< HEAD
 import { Container, Col, Row, Button, ListGroup } from "react-bootstrap";
-=======
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  ListGroup,
-  Form,
-  Image,
-} from "react-bootstrap";
->>>>>>> 53cd709 (resolve conflict)
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CarItem from "../Car";
