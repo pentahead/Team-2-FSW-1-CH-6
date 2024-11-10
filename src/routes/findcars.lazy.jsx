@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { findCars, getCars } from "../service/cars";
 import CarItem from "../components/Car";
 import MyVerticallyCenteredModal from "../components/Modals";
+<<<<<<< HEAD
 import { MoonLoader } from "react-spinners";
+=======
+>>>>>>> 53cd709 (resolve conflict)
 
 export const Route = createLazyFileRoute("/findcars")({
   component: FindCars,
@@ -38,7 +41,12 @@ const HeroSection = () => {
   );
 };
 
+<<<<<<< HEAD
 const SearchSection = ({ onSearch, isLoading, setIsLoading }) => {
+=======
+const SearchSection = ({ onSearch }) => {
+  const [isLoading, setIsLoading] = useState(false);
+>>>>>>> 53cd709 (resolve conflict)
   const [searchParams, setSearchParams] = useState({
     driver: "",
     date: "",
@@ -137,11 +145,16 @@ const SearchSection = ({ onSearch, isLoading, setIsLoading }) => {
   );
 };
 
+<<<<<<< HEAD
 const ResultSection = ({ cars, isLoading }) => {
+=======
+const ResultSection = ({ cars }) => {
+>>>>>>> 53cd709 (resolve conflict)
   const [modalShow, setModalShow] = useState(false);
   const [id, setId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
 
+<<<<<<< HEAD
   if (isLoading) {
     return (
       <Row
@@ -152,6 +165,8 @@ const ResultSection = ({ cars, isLoading }) => {
       </Row>
     );
   }
+=======
+>>>>>>> 53cd709 (resolve conflict)
   return (
     <section id="result">
       <Container className="mt-5 py-5">
@@ -189,11 +204,15 @@ const ResultSection = ({ cars, isLoading }) => {
 
 function FindCars() {
   const [cars, setCars] = useState([]);
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(false);
+=======
+>>>>>>> 53cd709 (resolve conflict)
 
   return (
     <GuestLayout>
       <HeroSection />
+<<<<<<< HEAD
       <SearchSection
         isLoading={isLoading}
         setIsLoading={setIsLoading}
@@ -204,6 +223,10 @@ function FindCars() {
         isLoading={isLoading}
         setIsLoading={setIsLoading}
       />
+=======
+      <SearchSection onSearch={setCars} />
+      <ResultSection cars={cars} />
+>>>>>>> 53cd709 (resolve conflict)
     </GuestLayout>
   );
 }
