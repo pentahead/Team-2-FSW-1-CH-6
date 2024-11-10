@@ -5,7 +5,6 @@ import CarItem from "../Car";
 import MyVerticallyCenteredModal from "../Modals";
 import { getCars } from "../../service/cars";
 import { MoonLoader } from "react-spinners";
-
 import FormComponent from "./FormComponent";
 // import FormComponent from "./FormComponent";
 
