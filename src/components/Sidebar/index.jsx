@@ -55,7 +55,7 @@ function NavbarLocal() {
           <Nav>
             <Nav.Link>
               <Image
-                src={""}
+                src={user?.profile_picture}
                 fluid
                 style={{
                   width: "30px",
@@ -68,7 +68,7 @@ function NavbarLocal() {
             </Nav.Link>
             <Dropdown as={ButtonGroup} className="border-0 me-5">
               <Button className="bg-white px-4 text-black border-0">
-                user
+                {user?.name}
               </Button>
 
               <Dropdown.Toggle
@@ -79,9 +79,10 @@ function NavbarLocal() {
               />
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/profile">
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Nav>
