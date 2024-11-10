@@ -94,29 +94,17 @@ const ScreenTypes = () => {
   };
 
   return (
-    <>
-      <Container className="mt-2">
-        <Row>
-          <Col>
-            <h3>Cars Type</h3>
-            <Row className="mb-3 justify-content-between">
-              <Col>
-                <h3>Type</h3>
-              </Col>
-              <Col className="d-flex flex-row justify-content-end">
-                <Button variant="success">Add New Car</Button>
-              </Col>
-            </Row>
-            <Row>
-              <ListGroup horizontal className="px-3 gap-3 w-25">
-                <ListGroup.Item action>All</ListGroup.Item>
-                <ListGroup.Item action>Small</ListGroup.Item>
-                <ListGroup.Item action>Medium</ListGroup.Item>
-                <ListGroup.Item action>Large</ListGroup.Item>
-              </ListGroup>
-            </Row>
-          </Col>
-        </Row>
+    <Container className="mt-2">
+      <Row>
+        <Col>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 className="text-primary">Type</h3>
+              <h5 className="text-muted">Manage Type</h5>
+            </div>
+          </div>
+        </Col>
+      </Row>
 
         <Row className="mt-3">
           <Col>

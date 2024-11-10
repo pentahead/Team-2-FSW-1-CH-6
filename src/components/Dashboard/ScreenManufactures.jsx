@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+    import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Container,
@@ -171,6 +171,23 @@ function CreateManufacture({ onManufactureCreated, id, setId }) {
 
     toast.error(result?.message);
   };
+
+  useEffect(() => {
+    const fetchManufactureDetail = async () => {
+        if (id) {
+            setIsLoading(true); // Set loading to true when fetching data
+            const result = await getDetailManufacture(id);
+            setIsLoading(false); // Set loading to false after fetching is done
+            if (result?.success) {
+            setManufactureName(result.data.manufacture_name);
+            setManufactureRegion(result.data.manufacture_region);
+            setYear(result.data.year_establish);
+            }
+        }
+    };
+
+    fetchManufactureDetail();
+  }, [id]);
 
   return (
     <Card>
