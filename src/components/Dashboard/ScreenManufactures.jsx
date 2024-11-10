@@ -23,30 +23,92 @@ import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 
 const ScreenManufactures = () => {
+  const { token } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const [manufactures, setManufactures] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [id, setId] = useState(null);
+
+  const getManufactureData = async () => {
+    setIsLoading(true);
+    const result = await getManufacture();
+    if (result.success) {
+      setManufactures(result.data);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (token) {
+      getManufactureData();
+    }
+  }, [token]);
+
+  if (!token) {
+    return (
+      <Row className="mt-4">
+        <Col>
+          <h1 className="text-center">
+            Please login first to get Manufacture data!
+          </h1>
+        </Col>
+      </Row>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Row
+        className="mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <MoonLoader color="#1306ff" />
+      </Row>
+    );
+  }
+
+  const onDelete = async (event, id) => {
+    event.preventDefault();
+
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure to delete this data?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            const result = await deleteManufacture(id);
+            if (result?.success) {
+              toast.success("Data deleted successfully");
+              getManufactureData();
+              return;
+            }
+
+            toast.error(result?.message);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   return (
-    <>
-      <Container className="mt-2">
-        <Row>
-          <Col>
-            <h3>Cars Manufactures</h3>
-            <Row className="mb-3 justify-content-between">
-              <Col>
-                <h3>Manufactures</h3>
-              </Col>
-              <Col className="d-flex flex-row justify-content-end">
-                <Button variant="success">Add New Car</Button>
-              </Col>
-            </Row>
-            <Row>
-              <ListGroup horizontal className="px-3 gap-3 w-25">
-                <ListGroup.Item action>All</ListGroup.Item>
-                <ListGroup.Item action>Small</ListGroup.Item>
-                <ListGroup.Item action>Medium</ListGroup.Item>
-                <ListGroup.Item action>Large</ListGroup.Item>
-              </ListGroup>
-            </Row>
-          </Col>
-        </Row>
+    <Container className="mt-2">
+      <Row>
+        <Col>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 className="text-primary">Manufacture</h3>
+              <h5 className="text-muted">Manage Manufacture</h5>
+            </div>
+          </div>
+        </Col>
+      </Row>
 
         <Row className="mt-3">
           <Col>{/* <CarItem /> */}</Col>
