@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -12,27 +11,28 @@ import {
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
+
 import { confirmAlert } from "react-confirm-alert";
 import {
   createAvailable,
-  getAvailables,
-  getDetailAvailable,
+  deleteAvailable,
   updateAvailable,
+  getDetailAvailable,
+  getAvailables,
 } from "../../service/availables";
 
 const ScreenAvailables = () => {
   const { token } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
 
-  const [availables, setAvailabels] = useState([]);
+  const [availables, setAvailables] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [id, setId] = useState(null);
 
   const getAvailableData = async () => {
     setIsLoading(true);
-    const result = await getAvailables();
+    const result = await getAvailables(); // Ganti dengan API yang sesuai
     if (result.success) {
-      setAvailabels(result.data);
+      setAvailables(result.data);
     }
     setIsLoading(false);
   };
@@ -76,7 +76,7 @@ const ScreenAvailables = () => {
         {
           label: "Yes",
           onClick: async () => {
-            const result = await deleteAvailable(id);
+            const result = await deleteAvailable(id); // Ganti dengan API yang sesuai
             if (result?.success) {
               toast.success("Data deleted successfully");
               getAvailableData();
@@ -110,9 +110,9 @@ const ScreenAvailables = () => {
       <Row className="mt-3">
         <Col>
           <CreateAvailable
-            onAvailableCreated={getAvailableData}
             id={id}
             setId={setId}
+            onAvailableCreated={getAvailableData}
           />
         </Col>
         <Col xs={6}>
@@ -132,8 +132,7 @@ const ScreenAvailables = () => {
                     </Col>
                     <Col>
                       <h6 className="mb-0 text-dark">
-                        {" "}
-                        {availables?.available_status}
+                        {available?.available_status}{" "}
                       </h6>
                     </Col>
 
@@ -142,12 +141,12 @@ const ScreenAvailables = () => {
                         <Button
                           variant="primary"
                           size="md"
-                          onClick={() => setId(availables.id)}
+                          onClick={() => setId(available.id)}
                         >
                           Edit
                         </Button>
                         <Button
-                          onClick={(event) => onDelete(event, availables.id)}
+                          onClick={(event) => onDelete(event, available.id)}
                           variant="danger"
                           size="md"
                         >
@@ -167,16 +166,29 @@ const ScreenAvailables = () => {
 };
 
 function CreateAvailable({ onAvailableCreated, id, setId }) {
-  const [availableStatus, setAvailableName] = useState("");
-  const [availableName, setAvailableName] = useState("");
+  const [availableStatus, setAvailableStatus] = useState(""); // Ganti dengan field yang sesuai
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchAvailableDetail = async () => {
+      if (id) {
+        setIsLoading(true);
+        const result = await getDetailAvailable(id); // ganti dengan API yang sesuai
+        setIsLoading(false);
+        if (result?.success) {
+          setAvailableStatus(result.data.available_status); // Ganti dengan field yang sesuai
+        }
+      }
+    };
+
+    fetchAvailableDetail();
+  }, [id]);
   const onSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     const request = {
-      availableStatus,
+      availableStatus, // Ganti dengan field yang sesuai
     };
 
     const result = id
@@ -187,8 +199,8 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
 
     if (result?.success) {
       toast.success("Data created successfully");
+      setAvailableStatus(""); // Reset field
       onAvailableCreated();
-      setAvailableName("");
       setId(null);
       return;
     } else {
@@ -197,21 +209,6 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
 
     toast.error(result?.message);
   };
-
-  useEffect(() => {
-    const fetchAvailableDetail = async () => {
-      if (id) {
-        setIsLoading(true); // Set loading to true when fetching data
-        const result = await getDetailAvailable(id);
-        setIsLoading(false); // Set loading to false after fetching is done
-        if (result?.success) {
-          setAvailableName(result.data.available_status);
-        }
-      }
-    };
-
-    fetchAvailableDetail();
-  }, [id]);
 
   return (
     <Card>
@@ -232,24 +229,28 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
                   type="text"
                   placeholder="Available Name"
                   required
-                  value={availableName}
+                  value={availableStatus}
                   onChange={(event) => {
-                    setAvailableName(event.target.value);
+                    setAvailableStatus(event.target.value);
                   }}
                 />
               </Col>
             </Form.Group>
-
-            <div className="d-grid gap-2">
+            <div className="d-flex flex-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Available"
-                    : "Create Available"}
+                {id ? "Update Available" : "Create Available"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}

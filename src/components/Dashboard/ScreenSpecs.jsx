@@ -231,16 +231,22 @@ function CreateSpec({ onSpecCreated, id, setId }) {
               </Col>
             </Form.Group>
 
-            <div className="d-grid gap-2">
+            <div className="d-grid d-flex flex-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Spec"
-                    : "Create Spec"}
+                {isLoading ? "Update Specs" : "Create Specs"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                    onSpecCreated();
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}

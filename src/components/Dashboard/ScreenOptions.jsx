@@ -236,16 +236,22 @@ function CreateOption({ onOptionCreated, id, setId }) {
               </Col>
             </Form.Group>
 
-            <div className="d-grid gap-2">
+            <div className=" d-flex flex-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Option"
-                    : "Create Option"}
+                {id ? "Update Option " : "Create Option"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                    onOptionCreated();
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}

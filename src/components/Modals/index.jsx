@@ -13,7 +13,7 @@ import { MoonLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 
 const MyVerticallyCenteredModal = (props) => {
-  const { id, setOpenForm } = props;
+  const { id, setOpenForm, getCarData, setId } = props;
   return (
     <Modal
       {...props}
@@ -25,7 +25,13 @@ const MyVerticallyCenteredModal = (props) => {
         <Modal.Title id="contained-modal-title-vcenter">Detail Car</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <CarDetail id={id} setOpenForm={setOpenForm} onHide={props.onHide} />
+        <CarDetail
+          id={id}
+          setId={setId}
+          setOpenForm={setOpenForm}
+          onHide={props.onHide}
+          getCarData={getCarData}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
@@ -34,7 +40,7 @@ const MyVerticallyCenteredModal = (props) => {
   );
 };
 
-function CarDetail({ id, setOpenForm, onHide }) {
+function CarDetail({ id, setOpenForm, onHide, setId, getCarData }) {
   const navigate = useNavigate();
 
   const [car, setCar] = useState(null);
@@ -95,7 +101,9 @@ function CarDetail({ id, setOpenForm, onHide }) {
           onClick: async () => {
             const result = await deleteCar(id);
             if (result?.success) {
-              navigate({ to: "/dashboard" });
+              // navigate({ to: "/dashboard" });
+              setId(null);
+              getCarData();
               return;
             }
 
@@ -104,7 +112,9 @@ function CarDetail({ id, setOpenForm, onHide }) {
         },
         {
           label: "No",
-          onClick: () => {},
+          onClick: () => {
+            setId(null);
+          },
         },
       ],
     });

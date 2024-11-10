@@ -148,7 +148,6 @@ const ScreenModels = () => {
                     </Col>
                     <Col>
                       <div className="d-flex justify-content-center gap-3">
-                        
                         <Button
                           as={Link}
                           variant="primary"
@@ -443,16 +442,22 @@ function CreateModel({ onModelCreated, id, setId }) {
               </Col>
             </Form.Group>
 
-            <div className="d-grid gap-2">
+            <div className="d-grid d-flex flex-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Model"
-                    : "Create Model"}
+                {isLoading ? "Update Models" : "Create Model"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                    onModelCreated();
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}

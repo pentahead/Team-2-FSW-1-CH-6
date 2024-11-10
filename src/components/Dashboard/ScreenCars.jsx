@@ -1,25 +1,11 @@
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  ListGroup,
-  Form,
-  Image,
-} from "react-bootstrap";
+import { Container, Col, Row, Button, ListGroup } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CarItem from "../Car";
 import MyVerticallyCenteredModal from "../Modals";
-import {
-  createCar,
-  getCars,
-  getDetailCar,
-  updateCar,
-} from "../../service/cars";
+import { getCars } from "../../service/cars";
 import { MoonLoader } from "react-spinners";
-import { getModels } from "../../service/models";
-import { getAvailables } from "../../service/availables";
+
 import FormComponent from "./FormComponent";
 // import FormComponent from "./FormComponent";
 
@@ -91,7 +77,6 @@ const ScreenCars = () => {
                   className="bi bi-plus-circle me-2"
                   style={{ fontSize: "1.2rem" }}
                 ></i>{" "}
-                {/* Add icon */}
                 Add New Car
               </Button>
             </div>
@@ -134,7 +119,12 @@ const ScreenCars = () => {
               </Row>
             )
           ) : (
-            <FormComponent setOpenForm={setOpenForm} id={id} setId={setId} getCarData={getCarData} />
+            <FormComponent
+              setOpenForm={setOpenForm}
+              id={id}
+              setId={setId}
+              getCarData={getCarData}
+            />
           )}
         </Row>
       </Container>
@@ -142,12 +132,16 @@ const ScreenCars = () => {
       <MyVerticallyCenteredModal
         show={modalShow}
         setOpenForm={setOpenForm}
+        getCarData={getCarData}
         id={id}
+        setId={setId}
         onHide={() => {
           setModalShow(false);
+          setId(null);
         }}
       />
     </>
   );
 };
 
+export default ScreenCars;

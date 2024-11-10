@@ -207,7 +207,11 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
                     <Form.Control
                       type="datetime-local"
                       required
-                      value={availableAt}
+                      value={
+                        availableAt
+                          ? new Date(availableAt).toISOString().slice(0, 16) // format ke YYYY-MM-DDTHH:MM
+                          : ""
+                      }
                       onChange={(e) => setAvailableAt(e.target.value)}
                     />
                   </Col>
@@ -241,7 +245,7 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
                       value={availableStatus}
                       onChange={(e) => setAvailableStatus(e.target.value)}
                     >
-                      <option value="" disabled>
+                      <option value={availableStatus} disabled>
                         Select Status
                       </option>
                       {availableStatuses.map((status) => (
@@ -262,7 +266,7 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
                       value={modelId}
                       onChange={(e) => setModelId(e.target.value)}
                     >
-                      <option value="" disabled>
+                      <option value={models} disabled>
                         Select Model
                       </option>
                       {models.map((model) => (
