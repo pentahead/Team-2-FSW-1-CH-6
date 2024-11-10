@@ -136,7 +136,7 @@ const ScreenCars = () => {
         setId={setId}
         onHide={() => {
           setModalShow(false);
-          setId(null);
+          
         }}
       />
     </>
