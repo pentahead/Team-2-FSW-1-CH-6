@@ -84,7 +84,7 @@ const ScreenCars = () => {
                   setId(null);
                 }}
                 variant="success"
-                disabled={isEditMode} // Add condition to disable button when editing
+                // disabled={isEditMode}
                 className="d-flex align-items-center"
               >
                 <i

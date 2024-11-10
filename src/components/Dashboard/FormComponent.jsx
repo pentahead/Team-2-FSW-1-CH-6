@@ -77,7 +77,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
 
     if (result?.success) {
       setOpenForm(false);
-      id = null;
+      setId(null);
     } else {
       alert(result?.message);
     }

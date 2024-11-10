@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { findCars, getCars } from "../service/cars";
 import CarItem from "../components/Car";
 import MyVerticallyCenteredModal from "../components/Modals";
+import { MoonLoader } from "react-spinners";
 
 export const Route = createLazyFileRoute("/findcars")({
   component: FindCars,
@@ -37,8 +38,7 @@ const HeroSection = () => {
   );
 };
 
-const SearchSection = ({ onSearch }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const SearchSection = ({ onSearch, isLoading, setIsLoading }) => {
   const [searchParams, setSearchParams] = useState({
     driver: "",
     date: "",
@@ -137,11 +137,21 @@ const SearchSection = ({ onSearch }) => {
   );
 };
 
-const ResultSection = ({ cars }) => {
+const ResultSection = ({ cars, isLoading }) => {
   const [modalShow, setModalShow] = useState(false);
   const [id, setId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
 
+  if (isLoading) {
+    return (
+      <Row
+        className="mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <MoonLoader color="#1306ff" />
+      </Row>
+    );
+  }
   return (
     <section id="result">
       <Container className="mt-5 py-5">
@@ -179,12 +189,21 @@ const ResultSection = ({ cars }) => {
 
 function FindCars() {
   const [cars, setCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <GuestLayout>
       <HeroSection />
-      <SearchSection onSearch={setCars} />
-      <ResultSection cars={cars} />
+      <SearchSection
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        onSearch={setCars}
+      />
+      <ResultSection
+        cars={cars}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+      />
     </GuestLayout>
   );
 }

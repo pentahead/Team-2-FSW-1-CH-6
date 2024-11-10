@@ -133,6 +133,12 @@ const NavigationBar = () => {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
+                          {user?.role_id === 1 && (
+                            <Dropdown.Item as={Link} to="/dashboard">
+                              Dashboard
+                            </Dropdown.Item>
+                          )}
+
                           <Dropdown.Item as={Link} to="/profile">
                             Profile
                           </Dropdown.Item>
