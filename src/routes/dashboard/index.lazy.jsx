@@ -7,13 +7,9 @@ import ScreenModels from "../../components/Dashboard/ScreenModels";
 import ScreenManufactures from "../../components/Dashboard/ScreenManufactures";
 import ScreenTransmission from "../../components/Dashboard/ScreenTransmission";
 import ScreenType from "../../components/Dashboard/ScreenType";
-<<<<<<< HEAD
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
-import ScreenSpecs from "../../components/Dashboard/ScreenSpecs";
+import ScreenSpecs from "../../components/Dashboard/ScreenSpec";
 import ScreenOptions from "../../components/Dashboard/ScreenOptions";
-=======
->>>>>>> 71a0f30 (Finishing CRUD Car)
-import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
 // import ScreenSpec from "../../components/Dashboard/ScreenSpec"; // Pastikan ini diimport
 // import ScreenOptions from "../../components/Dashboard/ScreenOptions"; // Pastikan ini diimport
 
@@ -60,18 +56,9 @@ export default function Dashboard() {
         {openTransmission && <ScreenTransmission />}
         {openModel && <ScreenModels />}
         {openType && <ScreenType />}
-<<<<<<< HEAD
-        {openAvailabels && <ScreenAvailables />}
         {openSpec && <ScreenSpecs />}
         {openOptions && <ScreenOptions />}
-        {openAvailabels && <ScreenAvailables />}
-        {/* {openSpec && <ScreenSpec />} */}
-        {/* {openOptions && <ScreenOptions />}  */}
-=======
-        {openAvailables && <ScreenAvailables />}{" "}
-        {/* {openSpec && <ScreenSpec />}
-        {openOptions && <ScreenOptions />}{" "} */}
->>>>>>> 93767ea (availables)
+        {openAvailables && <ScreenAvailables />}
       </AuthenticatedLayout>
     </>
   );
