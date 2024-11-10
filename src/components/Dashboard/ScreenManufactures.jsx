@@ -1,4 +1,4 @@
-    import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Container,
@@ -186,6 +186,23 @@ function CreateManufacture({ onManufactureCreated, id, setId }) {
   const [year, setYear] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchManufactureDetail = async () => {
+      if (id) {
+        setIsLoading(true); // Set loading to true when fetching data
+        const result = await getDetailManufacture(id);
+        setIsLoading(false); // Set loading to false after fetching is done
+        if (result?.success) {
+          setManufactureName(result.data.manufacture_name);
+          setManufactureRegion(result.data.manufacture_region);
+          setYear(result.data.year_establish);
+        }
+      }
+    };
+
+    fetchManufactureDetail();
+  }, [id]);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); // Set loading to true when the form is being submitted
@@ -216,23 +233,6 @@ function CreateManufacture({ onManufactureCreated, id, setId }) {
 
     toast.error(result?.message);
   };
-
-  useEffect(() => {
-    const fetchManufactureDetail = async () => {
-        if (id) {
-            setIsLoading(true); // Set loading to true when fetching data
-            const result = await getDetailManufacture(id);
-            setIsLoading(false); // Set loading to false after fetching is done
-            if (result?.success) {
-            setManufactureName(result.data.manufacture_name);
-            setManufactureRegion(result.data.manufacture_region);
-            setYear(result.data.year_establish);
-            }
-        }
-    };
-
-    fetchManufactureDetail();
-  }, [id]);
 
   return (
     <Card>
@@ -290,16 +290,22 @@ function CreateManufacture({ onManufactureCreated, id, setId }) {
                 />
               </Col>
             </Form.Group>
-            <div className="d-grid gap-2">
+            <div className="d-flex flexe-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Manufacture"
-                    : "Create Manufacture"}
+                {id ? "Update Manufacture" : "Create Manufacture"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                    onManufactureCreated();
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}

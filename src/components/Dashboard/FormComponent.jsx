@@ -4,7 +4,7 @@ import { createCar, getDetailCar, updateCar } from "../../service/cars";
 import { getModels } from "../../service/models";
 import { getAvailables } from "../../service/availables";
 
-const FormComponent = ({ setOpenForm, id, setId }) => {
+const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
   const [plate, setPlate] = useState("");
   const [rentPerDay, setRentPerDay] = useState("");
   const [description, setDescription] = useState("");
@@ -77,7 +77,8 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
 
     if (result?.success) {
       setOpenForm(false);
-      id = null;
+      setId(null);
+      getCarData();
     } else {
       alert(result?.message);
     }
@@ -206,7 +207,11 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
                     <Form.Control
                       type="datetime-local"
                       required
-                      value={availableAt}
+                      value={
+                        availableAt
+                          ? new Date(availableAt).toISOString().slice(0, 16) // format ke YYYY-MM-DDTHH:MM
+                          : ""
+                      }
                       onChange={(e) => setAvailableAt(e.target.value)}
                     />
                   </Col>
@@ -240,7 +245,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
                       value={availableStatus}
                       onChange={(e) => setAvailableStatus(e.target.value)}
                     >
-                      <option value="" disabled>
+                      <option value={availableStatus} disabled>
                         Select Status
                       </option>
                       {availableStatuses.map((status) => (
@@ -261,7 +266,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
                       value={modelId}
                       onChange={(e) => setModelId(e.target.value)}
                     >
-                      <option value="" disabled>
+                      <option value={models} disabled>
                         Select Model
                       </option>
                       {models.map((model) => (
@@ -273,11 +278,7 @@ const FormComponent = ({ setOpenForm, id, setId }) => {
                   </Col>
                 </Form.Group>
                 <div className="d-flex justify-content-start gap-1 flex-row">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    onClick={() => alert(id ? "Editing Car" : "Creating Car")}
-                  >
+                  <Button type="submit" variant="primary">
                     {id ? "Edit Car" : "Create Car"}
                   </Button>
 

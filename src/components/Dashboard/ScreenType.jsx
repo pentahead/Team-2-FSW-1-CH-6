@@ -48,9 +48,7 @@ const ScreenTypes = () => {
     return (
       <Row className="mt-4">
         <Col>
-          <h1 className="text-center">
-            Please login first to get Type data!
-          </h1>
+          <h1 className="text-center">Please login first to get Type data!</h1>
         </Col>
       </Row>
     );
@@ -110,11 +108,7 @@ const ScreenTypes = () => {
 
       <Row className="mt-3">
         <Col>
-          <CreateType
-            onTypeCreated={getTypeData}
-            id={id}
-            setId={setId}
-          />
+          <CreateType onTypeCreated={getTypeData} id={id} setId={setId} />
         </Col>
         <Col xs={6}>
           <ListGroup as="ul">
@@ -238,16 +232,22 @@ function CreateType({ onTypeCreated, id, setId }) {
                 />
               </Col>
             </Form.Group>
-            <div className="d-grid gap-2">
+            <div className="d-grid d-flex flex-row justify-content-end gap-2">
               <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading
-                  ? id
-                    ? "Updating..."
-                    : "Creating..."
-                  : id
-                    ? "Update Type"
-                    : "Create Type"}
+                {id ? "Update Type" : "Create Type"}
               </Button>
+              {id && (
+                <Button
+                  onClick={() => {
+                    setId(null);
+                    onTypeCreated();
+                  }}
+                  // type="submit"
+                  variant="danger"
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           </Form>
         )}
