@@ -271,7 +271,7 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenType)}
+                    onClick={() => handleClick(setAvailabels)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Availabels
@@ -290,7 +290,7 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenType)}
+                    onClick={() => handleClick(setSpec)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Spec
@@ -309,7 +309,7 @@ function Sidebar({
                     xl={0}
                     href="#"
                     className="align-middle text-black py-2 d-flex justify-content-center align-items-center m-0 p-0 w-100"
-                    onClick={() => handleClick(setOpenType)}
+                    onClick={() => handleClick(setOptions)}
                   >
                     <span className="ms-5 d-none d-sm-inline fs-5 w-100">
                       Options

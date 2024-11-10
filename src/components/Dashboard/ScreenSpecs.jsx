@@ -12,37 +12,37 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
-  createAvailable,
-  updateAvailable,
-  getAvailables,
-  getDetailAvailable,
-  deleteAvailable,
-} from "../../service/availables";
+  getSpecs,
+  getDetailSpec,
+  createSpec,
+  updateSpec,
+  deleteSpec,
+} from "../../service/specs";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 
-const ScreenAvailables = () => {
+const ScreenSpecs = () => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [availables, setAvailabels] = useState([]);
+  const [specs, setSpec] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [id, setId] = useState(null);
 
-  const getAvailableData = async () => {
+  const getSpecData = async () => {
     setIsLoading(true);
-    const result = await getAvailables();
+    const result = await getSpecs();
     if (result.success) {
-      setAvailabels(result.data);
+      setSpec(result.data);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (token) {
-      getAvailableData();
+      getSpecData();
     }
   }, [token]);
 
@@ -50,9 +50,7 @@ const ScreenAvailables = () => {
     return (
       <Row className="mt-4">
         <Col>
-          <h1 className="text-center">
-            Please login first to get Available data!
-          </h1>
+          <h1 className="text-center">Please login first to get Spec data!</h1>
         </Col>
       </Row>
     );
@@ -79,10 +77,10 @@ const ScreenAvailables = () => {
         {
           label: "Yes",
           onClick: async () => {
-            const result = await deleteAvailable(id);
+            const result = await deleteSpec(id);
             if (result?.success) {
               toast.success("Data deleted successfully");
-              getAvailableData();
+              getSpecData();
               return;
             }
 
@@ -103,8 +101,8 @@ const ScreenAvailables = () => {
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <div>
-              <h3 className="text-primary">Available</h3>
-              <h5 className="text-muted">Manage Available</h5>
+              <h3 className="text-primary">Spec</h3>
+              <h5 className="text-muted">Manage Spec</h5>
             </div>
           </div>
         </Col>
@@ -112,18 +110,14 @@ const ScreenAvailables = () => {
 
       <Row className="mt-3">
         <Col>
-          <CreateAvailable
-            onAvailableCreated={getAvailableData}
-            id={id}
-            setId={setId}
-          />
+          <CreateSpec onSpecCreated={getSpecData} id={id} setId={setId} />
         </Col>
         <Col xs={6}>
           <ListGroup as="ul">
-            {availables.length === 0 ? (
-              <h1>Available not found!</h1>
+            {specs.length === 0 ? (
+              <h1>Specs not found!</h1>
             ) : (
-              availables.map((availables, index) => (
+              specs.map((specs, index) => (
                 <ListGroup.Item
                   as="li"
                   key={index}
@@ -134,10 +128,7 @@ const ScreenAvailables = () => {
                       <span>{index + 1}</span>
                     </Col>
                     <Col>
-                      <h6 className="mb-0 text-dark">
-                        {" "}
-                        {availables?.available_status}
-                      </h6>
+                      <h6 className="mb-0 text-dark"> {specs?.spec_name}</h6>
                     </Col>
                     <Col>
                       <div className="d-flex justify-content-center gap-3">
@@ -145,12 +136,12 @@ const ScreenAvailables = () => {
                           as={Link}
                           variant="primary"
                           size="md"
-                          onClick={() => setId(availables.id)}
+                          onClick={() => setId(specs.id)}
                         >
                           Edit
                         </Button>
                         <Button
-                          onClick={(event) => onDelete(event, availables.id)}
+                          onClick={(event) => onDelete(event, specs.id)}
                           variant="danger"
                           size="md"
                         >
@@ -169,8 +160,8 @@ const ScreenAvailables = () => {
   );
 };
 
-function CreateAvailable({ onAvailableCreated, id, setId }) {
-  const [availableStatus, setAvailableName] = useState("");
+function CreateSpec({ onSpecCreated, id, setId }) {
+  const [specName, setSpecName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (event) => {
@@ -178,19 +169,19 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
     setIsLoading(true); // Set loading to true when the form is being submitted
 
     const request = {
-      availableStatus,
+      specName,
     };
 
     const result = id
-      ? await updateAvailable(id, request)
-      : await createAvailable(request);
+      ? await updateSpec(id, request)
+      : await createSpec(request);
 
     setIsLoading(false); // Set loading to false after the request is complete
 
     if (result?.success) {
       toast.success("Data created successfully");
-      onAvailableCreated();
-      setAvailableName("");
+      onSpecCreated();
+      setSpecName("");
       setId(null);
       return;
     } else {
@@ -201,23 +192,23 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
   };
 
   useEffect(() => {
-    const fetchAvailableDetail = async () => {
+    const fetchSpecDetail = async () => {
       if (id) {
         setIsLoading(true); // Set loading to true when fetching data
-        const result = await getDetailAvailable(id);
+        const result = await getDetailSpec(id);
         setIsLoading(false); // Set loading to false after fetching is done
         if (result?.success) {
-          setAvailableName(result.data.available_status);
+          setSpecName(result.data.spec_name);
         }
       }
     };
 
-    fetchAvailableDetail();
+    fetchSpecDetail();
   }, [id]);
 
   return (
     <Card>
-      <Card.Header className="text-center">Create Available</Card.Header>
+      <Card.Header className="text-center">Create Spec</Card.Header>
       <Card.Body>
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center">
@@ -225,7 +216,7 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
           </div>
         ) : (
           <Form onSubmit={onSubmit}>
-            <Form.Group as={Row} className="mb-3" controlId="available_name">
+            <Form.Group as={Row} className="mb-3" controlId="spec_name">
               <Form.Label column sm={3}>
                 Name
               </Form.Label>
@@ -234,8 +225,8 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
                   type="text"
                   placeholder="Name"
                   required
-                  value={availableStatus}
-                  onChange={(event) => setAvailableName(event.target.value)}
+                  value={specName}
+                  onChange={(event) => setSpecName(event.target.value)}
                 />
               </Col>
             </Form.Group>
@@ -247,8 +238,8 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
                     ? "Updating..."
                     : "Creating..."
                   : id
-                    ? "Update Available"
-                    : "Create Available"}
+                    ? "Update Spec"
+                    : "Create Spec"}
               </Button>
             </div>
           </Form>
@@ -258,4 +249,4 @@ function CreateAvailable({ onAvailableCreated, id, setId }) {
   );
 }
 
-export default ScreenAvailables;
+export default ScreenSpecs;
