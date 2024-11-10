@@ -106,59 +106,57 @@ const ScreenTypes = () => {
         </Col>
       </Row>
 
-        <Row className="mt-3">
-          <Col>
-            <CreateType onTypeCreated={getTypeData} id={id} setId={setId} />
-          </Col>
-          <Col xs={6}>
-            <ListGroup as="ul">
-              {types.length === 0 ? (
-                <h1>Types not found!</h1>
-              ) : (
-                types.map((type, index) => (
-                  <ListGroup.Item
-                    as="li"
-                    key={index}
-                    className="py-3 border-bottom"
-                  >
-                    <Row className="align-items-center">
-                      <Col xs="auto">
-                        <span>{index + 1}</span>
-                      </Col>
-                      <Col>
-                        <h6 className="mb-0 text-dark">
-                          {type?.type_name}{" "}
-                          {/* Ganti dengan field yang sesuai */}
-                        </h6>
-                      </Col>
+      <Row className="mt-3">
+        <Col>
+          <CreateType onTypeCreated={getTypeData} id={id} setId={setId} />
+        </Col>
+        <Col xs={6}>
+          <ListGroup as="ul">
+            {types.length === 0 ? (
+              <h1>Types not found!</h1>
+            ) : (
+              types.map((type, index) => (
+                <ListGroup.Item
+                  as="li"
+                  key={index}
+                  className="py-3 border-bottom"
+                >
+                  <Row className="align-items-center">
+                    <Col xs="auto">
+                      <span>{index + 1}</span>
+                    </Col>
+                    <Col>
+                      <h6 className="mb-0 text-dark">
+                        {type?.type_name} {/* Ganti dengan field yang sesuai */}
+                      </h6>
+                    </Col>
 
-                      <Col>
-                        <div className="d-flex justify-content-center gap-3">
-                          <Button
-                            variant="primary"
-                            size="md"
-                            onClick={() => setId(type.id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            onClick={(event) => onDelete(event, type.id)}
-                            variant="danger"
-                            size="md"
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))
-              )}
-            </ListGroup>
-          </Col>
-        </Row>
-      </Container>
-    </>
+                    <Col>
+                      <div className="d-flex justify-content-center gap-3">
+                        <Button
+                          variant="primary"
+                          size="md"
+                          onClick={() => setId(type.id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={(event) => onDelete(event, type.id)}
+                          variant="danger"
+                          size="md"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))
+            )}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

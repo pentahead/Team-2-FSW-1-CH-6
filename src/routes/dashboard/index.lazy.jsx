@@ -7,7 +7,7 @@ import ScreenManufactures from "../../components/Dashboard/ScreenManufactures";
 import ScreenTransmission from "../../components/Dashboard/ScreenTransmission";
 import ScreenType from "../../components/Dashboard/ScreenType";
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
-import ScreenSpecs from "../../components/Dashboard/ScreenSpec";
+import ScreenSpecs from "../../components/Dashboard/ScreenSpecs";
 import ScreenOptions from "../../components/Dashboard/ScreenOptions";
 import ScreenCars from "../../components/dashboard/ScreenCars";
 // import ScreenSpec from "../../components/Dashboard/ScreenSpec"; // Pastikan ini diimport
