@@ -36,8 +36,8 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
           setDescription(result.data.description);
           setAvailableAt(result.data.availableAt);
           setYear(result.data.year);
-          setAvailableStatus(result.data.availableStatus);
-          setModelId(result.data.modelId || "");
+          setModelId(result.data.model_id);
+          setAvailableStatus(result.data.availability_id);
           setImage(result.data.image);
           setCurrentProfilePicture(result.data.image);
         }
@@ -46,6 +46,7 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
 
     fetchData();
   }, [id, isEditMode]);
+  console.log(availableStatus);
 
   const onSubmit = async (event) => {
     console.log("Form submitted!");
@@ -242,10 +243,10 @@ const FormComponent = ({ setOpenForm, id, setId, getCarData }) => {
                   </Form.Label>
                   <Col sm="9">
                     <Form.Select
-                      value={availableStatus}
-                      onChange={(e) => setAvailableStatus(e.target.value)}
+                      value={availableStatus} // nilai yang dipilih oleh pengguna
+                      onChange={(e) => setAvailableStatus(e.target.value)} // memperbarui status
                     >
-                      <option value={availableStatus} disabled>
+                      <option value="" disabled>
                         Select Status
                       </option>
                       {availableStatuses.map((status) => (
