@@ -7,9 +7,12 @@ import ScreenModels from "../../components/Dashboard/ScreenModels";
 import ScreenManufactures from "../../components/Dashboard/ScreenManufactures";
 import ScreenTransmission from "../../components/Dashboard/ScreenTransmission";
 import ScreenType from "../../components/Dashboard/ScreenType";
+<<<<<<< HEAD
 import ScreenAvailables from "../../components/Dashboard/ScreenAvailables";
 import ScreenSpecs from "../../components/Dashboard/ScreenSpecs";
 import ScreenOptions from "../../components/Dashboard/ScreenOptions";
+=======
+>>>>>>> 71a0f30 (Finishing CRUD Car)
 
 export const Route = createLazyFileRoute("/dashboard/")({
   component: () => (
@@ -25,9 +28,6 @@ export default function Dashboard() {
   const [openModel, setOpenModel] = useState(false);
   const [openManufacture, setOpenManufacture] = useState(false);
   const [openType, setOpenType] = useState(false);
-  const [openAvailabels, setAvailabels] = useState(false);
-  const [openSpec, setSpec] = useState(false);
-  const [openOptions, setOptions] = useState(false);
   return (
     <>
       <AuthenticatedLayout
@@ -41,17 +41,11 @@ export default function Dashboard() {
         setOpenManufacture={setOpenManufacture}
         openType={openType}
         setOpenType={setOpenType}
-        setAvailabels={setAvailabels}
-        setSpec={setSpec}
-        setOptions={setOptions}
-        openAvailabels={openAvailabels}
-        openSpec={openSpec}
-        openOptions={openOptions}
       >
         {openCars && <ScreenCars />}
-        {openManufacture && <ScreenManufactures />}
         {openTransmission && <ScreenTransmission />}
         {openModel && <ScreenModels />}
+        {openManufacture && <ScreenManufactures />}
         {openType && <ScreenType />}
         {openAvailabels && <ScreenAvailables />}
         {openSpec && <ScreenSpecs />}
