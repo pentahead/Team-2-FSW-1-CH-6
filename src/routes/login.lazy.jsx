@@ -1,7 +1,6 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -9,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../redux/slices/auth"; // Import setUser action
 import { login } from "../service/auth";
 import { Container } from "react-bootstrap";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const Route = createLazyFileRoute("/login")({
   component: Login,
@@ -17,22 +18,28 @@ export const Route = createLazyFileRoute("/login")({
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { token, user } = useSelector((state) => state.auth);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    // Redirect based on role_id if token and user exist
-    if (token && user) {
-      if (user.role_id === 1) {
-        navigate({ to: "/dashboard" });
-      } else if (user.role_id === 2) {
-        navigate({ to: "/" });
-      }
-    }
-  }, [navigate, token, user]);
+  const { token } = useSelector((state) => state.auth);
+
+  if (token) {
+    navigate({ to: "/" });
+  }
+
+  const { mutate: loginUser } = useMutation({
+    mutationFn: (body) => {
+      return login(body);
+    },
+    onSuccess: (data) => {
+      dispatch(setToken(data?.token));
+      
+      navigate({ to: "/" });
+    },
+    onError: (err) => {
+      toast.error(err?.message);
+    },
+  });
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -41,18 +48,7 @@ function Login() {
       email,
       password,
     };
-
-    const result = await login(body);
-
-    if (result.success) {
-      const user = result.data.user; // Get user data, including role_id
-
-      // Save the token and user in Redux state
-      dispatch(setToken(result.data.token));
-      dispatch(setUser(user)); // Store user with role_id
-    } else {
-      alert(result.message); // Show error if login fails
-    }
+    loginUser(body);
   };
 
   return (

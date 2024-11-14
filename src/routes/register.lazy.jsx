@@ -5,15 +5,16 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Container } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "../service/auth";
+import { useMutation } from "@tanstack/react-query";
+import { setToken } from "../redux/slices/auth";
 
 export const Route = createLazyFileRoute("/register")({
   component: Register,
 });
 
 function Register() {
-  const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
 
   const [name, setName] = useState("");
@@ -22,11 +23,22 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profilePicture, setProfilePicture] = useState(undefined);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     navigate({ to: "/" });
-  //   }
-  // }, [token, navigate]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  if (token) {
+    navigate({ to: "/" });
+  }
+
+  const { mutate: registerUser } = useMutation({
+    mutationFn: (body) => {
+      return register(body);
+    },
+    onSuccess: (data) => {
+      dispatch(setToken(data?.token));
+      navigate({ to: "/" });
+    },
+  });
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -43,13 +55,7 @@ function Register() {
       profilePicture,
     };
 
-    const result = await register(request);
-    if (result.success) {
-      localStorage.setItem("token", result.data.token);
-      window.location = "/";
-    } else {
-      alert(result.message);
-    }
+    registerUser(request);
   };
 
   return (

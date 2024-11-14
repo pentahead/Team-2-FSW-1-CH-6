@@ -15,23 +15,40 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../../redux/slices/auth";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { profile } from "../../service/auth";
+import { useQuery } from "@tanstack/react-query";
 
 function NavbarLocal() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user, token } = useSelector((state) => state.auth);
+  const handleLogout = useCallback(() => {
+    dispatch(setUser(null));
+    dispatch(setToken(null));
+    navigate({ to: "/login" });
+  }, [dispatch, navigate]);
+
+  const { data, isSuccess, isError } = useQuery({
+    queryKey: ["profile"],
+    queryFn: profile,
+    enabled: token ? true : false,
+  });
+
   const logout = (event) => {
     event.preventDefault();
 
-    // delete the local storage here
-    dispatch(setUser(null));
-    dispatch(setToken(null));
-
-    // redirect to login
-    navigate({ to: "/login" });
+    handleLogout();
   };
-  const { user, token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setUser(data));
+    } else if (isError) {
+      handleLogout();
+    }
+  }, [isSuccess, isError, data, dispatch, handleLogout]);
+
   return (
     <>
       <Navbar expand="lg" className="bg-whiteshadow-sm">

@@ -5,53 +5,36 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Image from "react-bootstrap/Image";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../../redux/slices/auth";
 import { profile } from "../../service/auth";
-// Pastikan Anda menggunakan Link dari react-router
+import { useQuery } from "@tanstack/react-query";
 
 const NavigationBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { user, token } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const getProfile = async () => {
-      // fetch get profile
-      const result = await profile();
-      if (result.success) {
-        // set the user state here
-        dispatch(setUser(result.data));
-        return;
-      }
-
-      // If not success
-      // delete the local storage here
-      dispatch(setUser(null));
-      dispatch(setToken(null));
-
-      // redirect to login
-      navigate({ to: "/login" });
-    };
-
-    if (token) {
-      // hit api auth get profile and pass the token to the function
-      getProfile();
-    }
-  }, [dispatch, navigate, token]);
-
-  const logout = (event) => {
-    event.preventDefault();
-
-    // delete the local storage here
+  const handleLogout = useCallback(() => {
     dispatch(setUser(null));
     dispatch(setToken(null));
-
-    // redirect to login
     navigate({ to: "/login" });
-  };
+  }, [dispatch, navigate]);
+
+  const { data, isSuccess, isError } = useQuery({
+    queryKey: ["profile"],
+    queryFn: profile,
+    enabled: token ? true : false,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setUser(data));
+    } else if (isError) {
+      handleLogout();
+    }
+  }, [isSuccess, isError, data, dispatch, handleLogout]);
 
   const handleBrandClick = () => {
     // Check user's role_id and redirect accordingly
@@ -63,7 +46,11 @@ const NavigationBar = () => {
       navigate({ to: "/" });
     }
   };
+  const logout = (event) => {
+    event.preventDefault();
 
+    handleLogout();
+  };
   return (
     <>
       {["xxl"].map((expand) => (
